@@ -92,7 +92,6 @@ void drawGrid()
 void writeRandomMove(int choice)
 {
 	int count = 1;
-	int done = 0;
 
 	for (int i = 0; i < MATRIX_SQRT; i++) {
 		for (int j = 0; j < MATRIX_SQRT; j++) {
@@ -100,8 +99,7 @@ void writeRandomMove(int choice)
 				if (DEBUG) printf("empty square %d %d\n", i, j);
 				if ((count == choice) && !done) {
 					setComputerMove(i, j, COMPUTER);
-					done = 1;
-					break;
+					return;
 				}	
 				count++;
 			}
