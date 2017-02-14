@@ -11,7 +11,7 @@
 #include <sys/ioctl.h>
 #include "ticTacToe.h"
 
-#define GRID_HEIGHT	11
+#define OFFSET		11
 
 static int grid[6][13] =
 {
@@ -32,8 +32,12 @@ void welcome()
 	puts("\n");
 }
 
-/* TODO rename to setMove */
-void setMoves(int x, int y, int marker)
+int* getMoves()
+{
+	return *moves;
+}
+
+void setMove(int x, int y, int marker)
 {
 	if 	(x == 97)
 		x = 0;
@@ -97,14 +101,14 @@ void clearScreen()
 {
 	struct winsize max;
 	ioctl(0, TIOCGWINSZ , &max);
-	//printf ("lines %d\n", max.ws_row);
-	//printf ("columns %d\n", max.ws_col);
+	printf ("lines %d\n", max.ws_row);
+	printf ("columns %d\n", max.ws_col);
 
-	for (int i = 0; i < max.ws_row; i++)
+	for (int i = 0; i < (max.ws_col - 25); i++)
 	       puts("\n");
 }
 
-void writeRandomMove(int choice)
+void makeRandomMove(int choice)
 {
 	int count = 1;
 
@@ -124,24 +128,21 @@ void writeRandomMove(int choice)
 
 void writeHeadsOrTails()
 {
-	printf("Please choose between 'h' for heads or 't' for tails: ");
+	printf("Please choose, heads or tails h/t ?\n");
 }
 
 void writeComputerWinsToss()
 {
 	printf("The computer wins the toss and will go first.\n");
-	puts("\n");
 }
 
 void writeYourMove()
 {
-	printf("It is your move, please enter an a, b or c,\n");
-	printf("followed by 1, 2, or 3: ");
+	printf("It is your move, please enter a set of coordinates.\n");
 }
 
 void writeComputersMove()
 {
 	printf("My turn, now then, let me see ...\n");
-	puts("\n");
 }
 

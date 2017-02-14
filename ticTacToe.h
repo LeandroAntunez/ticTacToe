@@ -17,12 +17,13 @@ void start(void);
 
 // draw.c
 void welcome(void);
-void setMoves(int, int, int);
+int* getMoves(void);
+void setMove(int, int, int);
 void setComputerMove(int, int, int);
 void writeMovesToGrid(void);
 void drawGrid(void);
 void clearScreen(void);
-void writeRandomMove(int);
+void makeRandomMove(int);
 void writeHeadsOrTails(void);
 void writeComputerWinsToss(void);
 void writeYourMove(void);
