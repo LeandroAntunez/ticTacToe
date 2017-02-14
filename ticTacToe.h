@@ -6,6 +6,7 @@
 
 #define PLAYER 	 	1
 #define COMPUTER	2
+
 // The size of the playing board, the 'hash'.
 #define MATRIX		9
 #define MATRIX_SQRT	3
@@ -20,6 +21,7 @@ void setMoves(int, int, int);
 void setComputerMove(int, int, int);
 void writeMovesToGrid(void);
 void drawGrid(void);
+void clearScreen(void);
 void writeRandomMove(int);
 void writeHeadsOrTails(void);
 void writeComputerWinsToss(void);

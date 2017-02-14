@@ -8,7 +8,10 @@
  ============================================================================
  */
 #include <stdio.h>
+#include <sys/ioctl.h>
 #include "ticTacToe.h"
+
+#define GRID_HEIGHT	11
 
 static int grid[6][13] =
 {
@@ -79,6 +82,7 @@ void writeMovesToGrid()
 void drawGrid()
 {
 	writeMovesToGrid();
+	clearScreen();
 
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 13; j++)
@@ -89,6 +93,17 @@ void drawGrid()
 	printf("\n\n");
 }
 
+void clearScreen()
+{
+	struct winsize max;
+	ioctl(0, TIOCGWINSZ , &max);
+	//printf ("lines %d\n", max.ws_row);
+	//printf ("columns %d\n", max.ws_col);
+
+	for (int i = 0; i < max.ws_row; i++)
+	       puts("\n");
+}
+
 void writeRandomMove(int choice)
 {
 	int count = 1;
@@ -97,7 +112,7 @@ void writeRandomMove(int choice)
 		for (int j = 0; j < MATRIX_SQRT; j++) {
 			if (moves[i][j] == 0) {
 				if (DEBUG) printf("empty square %d %d\n", i, j);
-				if ((count == choice) && !done) {
+				if (count == choice) {
 					setComputerMove(i, j, COMPUTER);
 					return;
 				}	
@@ -129,3 +144,4 @@ void writeComputersMove()
 	printf("My turn, now then, let me see ...\n");
 	puts("\n");
 }
+
