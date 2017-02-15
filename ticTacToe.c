@@ -24,12 +24,10 @@ void play()
 
 	while(!winner)
 	{
-		callWriteMoves();
-		drawGrid();
+		drawGrid(PLAYER);
 		/* */
 		player1Move(PLAYER);
-		callWriteMoves();
-		drawGrid();
+		drawGrid(COMPUTER);
 		/* */
 		player2Move(COMPUTER);
 	}
@@ -51,8 +49,7 @@ void start()
 	int coin;
 	int player = COMPUTER;
 
-	welcome();
-	drawGrid();
+	drawGrid(player);
 	choice = headsOrTails();
 	coin = coinToss();
 
@@ -60,7 +57,6 @@ void start()
 	{
 		computerWinsToss(player);
 	}
-	else
-		play();
+	play();
 }
 

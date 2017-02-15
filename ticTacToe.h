@@ -13,8 +13,8 @@ void start(void);
 //logic.c
 void keepCount(void);
 int  getRemainingMoves(void);
-void setMove(int, int, int);
-void printMoves(void);
+void traslateCharForMove(int, int, int);
+void printDebugMoves(void);
 void refreshMoves(int);
 void callWriteMoves(void);
 int  headsOrTails(void);
@@ -26,16 +26,15 @@ int  randomMove(int);
 int  calculatedMove(int, int);
 int  calculateStatus(int);
 int  readLineStatus(int, int);
-int  writeStatusToCell(int, int);
+int  writeStatusToCell(int, int, int);
 void waitFor(unsigned int);
 
 // draw.c
-void welcome(void);
+void ticTacToe(void);
 void writeMoves(int[][3]);
-void drawGrid(void);
+void drawGrid(int);
 void clearScreen(void);
-void writeHeadsOrTails(void);
-void playerWinsToss(int);
-void writeYourMove(void);
-void writeComputersMove(void);
+void textHeadsOrTails(void);
+void textWhoWinsToss(int);
+void textPlayersMove(int);
 
