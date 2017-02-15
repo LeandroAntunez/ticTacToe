@@ -2,3 +2,7 @@ ticTacToe
 tags
 .*.swp
 .*.swo
+workbench.xmi
+.cproject
+.project
+.settings

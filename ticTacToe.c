@@ -24,6 +24,7 @@ void play()
 
 	while(!winner)
 	{
+		callWriteMoves();
 		drawGrid();
 		/* */
 		player1Move(PLAYER);
@@ -31,18 +32,17 @@ void play()
 		drawGrid();
 		/* */
 		player2Move(COMPUTER);
-		callWriteMoves();
 	}
 }
 
 void player1Move(int player)
 {
-	yourMove(player);
+	printf("%d", yourMove(player));
 }
 
 void player2Move(int player)
 {
-	computerMove(player);
+	printf("%d", computerMove(player));
 }
 
 void start()

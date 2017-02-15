@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define DEBUG		0
+#define DEBUG	1
 
 // ticTacToe.c
 void play(void);
@@ -12,16 +12,20 @@ void start(void);
 
 //logic.c
 void keepCount(void);
+int  getRemainingMoves(void);
 void setMove(int, int, int);
+void printMoves(void);
+void refreshMoves(int);
 void callWriteMoves(void);
 int  headsOrTails(void);
 int  coinToss(void);
 void computerWinsToss(int);
-void yourMove(int);
-void computerMove(int);
-void randomMove(int);
-int  calculateStatus(int, int);
-int  readLineStatus(int);
+int  yourMove(int);
+int  computerMove(int);
+int  randomMove(int);
+int  calculatedMove(int, int);
+int  calculateStatus(int);
+int  readLineStatus(int, int);
 int  writeStatusToCell(int, int);
 void waitFor(unsigned int);
 

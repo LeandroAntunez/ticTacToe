@@ -45,7 +45,7 @@ void writeMoves(int moves[][3])
 			{
 				grid[x][y] = 'O';
 			}
-			else if (moves[i][j] == 2)
+			else if (moves[i][j] == -1)
 			{
 				grid[x][y] = 'X';
 			}
@@ -55,6 +55,9 @@ void writeMoves(int moves[][3])
 void drawGrid()
 {
 	clearScreen();
+
+	if (DEBUG)
+		printMoves();
 
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 13; j++)

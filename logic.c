@@ -19,8 +19,9 @@
 #define TO_WIN	3
 
 static int movesMade;
-static int oponentSkill = 1;
-static int moves[3][3] = {{0}};
+static int moves[3][3] = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
+
+int level = 1;
 
 
 void keepCount()
@@ -51,6 +52,29 @@ void setMove(int x, int y, int marker)
 
 	moves[y][x] = marker;
 }
+
+void printMoves()
+{
+	for (int i = 0; i < M_SQRT; i++) {
+		for (int j = 0; j < M_SQRT; j++) {
+			printf("%2d", moves[i][j]);
+		}
+		puts("");
+	}
+	puts("");
+}
+
+void refreshMoves(int player)
+{
+	for (int i = 0; i < M_SQRT; i++) {
+		for (int j = 0; j < M_SQRT; j++) {
+			if ( (moves[i][j] != 1) && (moves[i][j] != -1) )
+					moves[i][j] = 0;
+		}
+	}
+	calculateStatus(player);
+}
+
 
 void callWriteMoves()
 {
@@ -92,7 +116,7 @@ void computerWinsToss(int player)
 	playerWinsToss(player);
 	waitFor(2); 
 
-	switch (oponentSkill)
+	switch (level)
 	{
 		case 1:
 			// Random move
@@ -111,6 +135,7 @@ void computerWinsToss(int player)
 		case 3:
 			// Will take the middle evey time.
 			setMove('b', '2', player);
+			keepCount();
 			break;
 		default :
 			break;
@@ -124,6 +149,7 @@ int yourMove(int player)
 	 * Request move from player, x can be either 1, 2 or 3
 	 * an y a, b or c
 	 */
+	refreshMoves(player);
 	writeYourMove();
 
 	int x;
@@ -144,8 +170,7 @@ int yourMove(int player)
 	int b;
 	int again = 0;
 
-	do
-	{
+	do {
 		// Inverse the cordinates if reasonable values.
 		if ((x > 48 && x < 52) && (y > 96 && y < 100))
 		{
@@ -172,16 +197,17 @@ int yourMove(int player)
 	setMove(x, y, player);
 	keepCount();
 
-	return calculateStatus();
+	return calculateStatus(player);
 }
 
 int computerMove(int player)
 {
 	int status;
 
+	refreshMoves(player);
 	writeComputersMove();
 	waitFor(2); 
-	switch (oponentSkill)
+	switch (level)
 	{
 		case 1:
 			status = randomMove(player);
@@ -224,15 +250,11 @@ int randomMove(int player)
 	 */
 	int count = 1;
 
-	int state;
-	int marker;
-	int x;
-	state = 0;
-
 	for (int i = 0; i < M_SQRT; i++) {
 		for (int j = 0; j < M_SQRT; j++)
 		{
-			if ((moves[i][j] != 1) && (moves[i][j] != -1)) {
+			if ( (moves[i][j] != 1) && (moves[i][j] != -1) )
+			{
 				if (count == choice) {
 					moves[i][j] = player;
 					return calculateStatus(player);
@@ -241,52 +263,54 @@ int randomMove(int player)
 			}
 		}
 	}
+	return -1;
 }
 
 int calculatedMove(int player, int level)
 {
 	int status;
-	status = calculateStatus();
+	status = calculateStatus(player);
 
 	switch (status)
 	{
 		case 0: if (level == 0)
-				randomMove();
+				randomMove(player);
 			if (level == 1)
-				randomMove();
+				randomMove(player);
 			break;
 		case 1: if (level == 0)
-				randomMove();
+				randomMove(player);
 			if (level == 1)
-				randomMove();
+				randomMove(player);
 			break;
 		case 2: if (level == 0)
-				randomMove();
+				randomMove(player);
 			if (level == 1)
-				randomMove();
+				randomMove(player);
 			break;
 		default:
 			break;
 	}
-	return calculateStatus();
+	return calculateStatus(player);
 }
 
 int calculateStatus(int player)
 {
-	int state;
+	int state = 0;
 	int marker;
 	int x;
-	state = 0;
+	state = x = 0;
 
 	for (int i = 0; i < M_SQRT; i++) {
-		for (int j = 0; j < M_SQRT; j++) {
-			if (moves[i][j] == player )
+		for (int j = 0; j < M_SQRT; j++)
+		{
+			if (moves[i][j] == player)
 			{
 				/*
 				 * Go get the line state ...
 				 * Set the next move status markers.
 				 */
-				x = readLineStatus(j);
+				x = readLineStatus(j, x);
 			}
 		}
 		/* 
@@ -298,15 +322,46 @@ int calculateStatus(int player)
 			// keep track of the highest state reached.
 			state = marker;
 		}
+		// Reset x for the next lines values
+		x = 0;
 	}
-	return status;
+
+	for (int j = 0; j < M_SQRT; j++) {
+		for (int i = 0; i < M_SQRT; i++)
+		{
+			if (moves[i][j] == player)
+			{
+				/*
+				 * Go get the line state ...
+				 * Set the next move status markers.
+				 */
+				x = readLineStatus(j, x);
+			}
+		}
+		/* 
+		 * Pass value of the above read (x) to set markers and retreive
+		 * the current state of the line.
+		 */
+		marker = writeStatusToCell(j, x);
+		if (marker > state) {
+			// keep track of the highest state reached.
+			state = marker;
+		}
+		// Reset x for the next lines values
+		x = 0;
+	}
+	return state;
 }
 
-int readLineStatus(int j)
+int readLineStatus(int j, int x)
 {
-	int x;
-
-	// Use 3 bit binary pattern to read row state.
+	/*
+	 * Use 3 bit binary pattern to read row state.
+	 * 000 -> 0
+	 * 100 -> 1
+	 * 010 -> 2
+	 * ...
+	 */
 	switch(j)
 	{
 		case 0:
@@ -320,6 +375,7 @@ int readLineStatus(int j)
 		default:
 			return x;
 	}
+	return -1;
 }
 
 int writeStatusToCell(int i, int x)
@@ -329,32 +385,33 @@ int writeStatusToCell(int i, int x)
 	{
 		case 0:
 			// Empty row.
-			return 0;
+			return 1;
 		case 1:
-			moves[i][1] = NEXT;
-			moves[i][2] = NEXT;
-			return 1;
+			if (moves[i][1] < NEXT) moves[i][1] = NEXT;
+			if (moves[i][2] < NEXT) moves[i][2] = NEXT;
+			return 2;
 		case 2:
-			moves[i][0] = NEXT;
-			moves[i][2] = NEXT;
-			return 1;
+			if (moves[i][0] < NEXT) moves[i][0] = NEXT;
+			if (moves[i][2] < NEXT) moves[i][2] = NEXT;
+			return 2;
 		case 3:
-			moves[i][2] = TO_WIN;
-			return 2;
+			if (moves[i][2] < TO_WIN) moves[i][2] = TO_WIN;
+			return 3;
 		case 4:
-			moves[i][0] = NEXT;
-			moves[i][1] = NEXT;
-			return 1;
+			if (moves[i][0] < NEXT) moves[i][0] = NEXT;
+			if (moves[i][1] < NEXT) moves[i][1] = NEXT;
+			return 2;
 		case 5:
-			moves[i][1] = TO_WIN;
-			return 2;
+			if (moves[i][1] < TO_WIN) moves[i][1] = TO_WIN;
+			return 3;
 		case 6:
-			moves[1][0] = TO_WIN;
-			return 2;
+			if (moves[i][0] < TO_WIN) moves[i][0] = TO_WIN;
+			return 3;
 		case 7:
 			// Player wins!
-			return 3;
+			return 4;
 	}
+	return -1;
 }
 
 void waitFor (unsigned int secs)
