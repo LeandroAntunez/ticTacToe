@@ -9,6 +9,9 @@
  */
 #include "ticTacToe.h"
 
+#define PLAYER 	 	1
+#define COMPUTER	-1
+
 int main(void)
 {
 	start();
@@ -22,16 +25,31 @@ void play()
 	while(!winner)
 	{
 		drawGrid();
-		yourMove();
+		/* */
+		player1Move(PLAYER);
+		callWriteMoves();
 		drawGrid();
-		computerMove();
+		/* */
+		player2Move(COMPUTER);
+		callWriteMoves();
 	}
+}
+
+void player1Move(int player)
+{
+	yourMove(player);
+}
+
+void player2Move(int player)
+{
+	computerMove(player);
 }
 
 void start()
 {
 	int choice;
 	int coin;
+	int player = COMPUTER;
 
 	welcome();
 	drawGrid();
@@ -40,7 +58,7 @@ void start()
 
 	if (choice != coin) 
 	{
-		computerWinsToss();
+		computerWinsToss(player);
 	}
 	else
 		play();

@@ -4,39 +4,34 @@
 
 #define DEBUG		0
 
-#define PLAYER 	 	1
-#define COMPUTER	2
-
-// The size of the playing board, the 'hash'.
-#define MATRIX		9
-#define MATRIX_SQRT	3
-
 // ticTacToe.c
 void play(void);
+void player1Move(int);
+void player2Move(int);
 void start(void);
-
-// draw.c
-void welcome(void);
-int* getMoves(void);
-void setMove(int, int, int);
-void setComputerMove(int, int, int);
-void writeMovesToGrid(void);
-void drawGrid(void);
-void clearScreen(void);
-void makeRandomMove(int);
-void writeHeadsOrTails(void);
-void writeComputerWinsToss(void);
-void writeYourMove(void);
-void writeComputersMove(void);
 
 //logic.c
 void keepCount(void);
-int getCount(void);
-void yourMove(void);
-void computerMove(void);
-int headsOrTails(void);
-int coinToss(void);
-void computerWinsToss(void);
-void randomMove(void);
+void setMove(int, int, int);
+void callWriteMoves(void);
+int  headsOrTails(void);
+int  coinToss(void);
+void computerWinsToss(int);
+void yourMove(int);
+void computerMove(int);
+void randomMove(int);
+int  calculateStatus(int, int);
+int  readLineStatus(int);
+int  writeStatusToCell(int, int);
 void waitFor(unsigned int);
+
+// draw.c
+void welcome(void);
+void writeMoves(int[][3]);
+void drawGrid(void);
+void clearScreen(void);
+void writeHeadsOrTails(void);
+void playerWinsToss(int);
+void writeYourMove(void);
+void writeComputersMove(void);
 

@@ -11,7 +11,7 @@
 #include <sys/ioctl.h>
 #include "ticTacToe.h"
 
-#define OFFSET		11
+#define OFFSET		35
 
 static int grid[6][13] =
 {
@@ -23,8 +23,6 @@ static int grid[6][13] =
 	{  '\t','3', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' }
 };
 
-static int moves[3][3] = {{0}};
-
 void welcome()
 {
 	puts("\n");
@@ -32,36 +30,7 @@ void welcome()
 	puts("\n");
 }
 
-int* getMoves()
-{
-	return *moves;
-}
-
-void setMove(int x, int y, int marker)
-{
-	if 	(x == 97)
-		x = 0;
-	else if (x == 98)
-		x = 1;
-	else if (x == 99)
-		x = 2;
-
-	if	(y == 49)
-		y = 0;
-	else if (y == 50)
-		y = 1;
-	else if (y == 51)
-		y = 2;
-
-	moves[y][x] = marker;
-}
-
-void setComputerMove(int x, int y, int marker)
-{
-	moves[x][y] = marker;
-}
-
-void writeMovesToGrid()
+void writeMoves(int moves[][3])
 {
 	int x;
 	int y;
@@ -85,7 +54,6 @@ void writeMovesToGrid()
 
 void drawGrid()
 {
-	writeMovesToGrid();
 	clearScreen();
 
 	for (int i = 0; i < 6; i++) {
@@ -101,29 +69,11 @@ void clearScreen()
 {
 	struct winsize max;
 	ioctl(0, TIOCGWINSZ , &max);
-	printf ("lines %d\n", max.ws_row);
-	printf ("columns %d\n", max.ws_col);
 
-	for (int i = 0; i < (max.ws_col - 25); i++)
+	for (int i = 0; i < max.ws_row; i++)
 	       puts("\n");
-}
-
-void makeRandomMove(int choice)
-{
-	int count = 1;
-
-	for (int i = 0; i < MATRIX_SQRT; i++) {
-		for (int j = 0; j < MATRIX_SQRT; j++) {
-			if (moves[i][j] == 0) {
-				if (DEBUG) printf("empty square %d %d\n", i, j);
-				if (count == choice) {
-					setComputerMove(i, j, COMPUTER);
-					return;
-				}	
-				count++;
-			}
-		}
-	}
+	//printf ("lines %d\n", max.ws_row);
+	//printf ("columns %d\n", max.ws_col);
 }
 
 void writeHeadsOrTails()
@@ -131,9 +81,9 @@ void writeHeadsOrTails()
 	printf("Please choose, heads or tails h/t ?\n");
 }
 
-void writeComputerWinsToss()
+void playerWinsToss(int player)
 {
-	printf("The computer wins the toss and will go first.\n");
+	printf("The computer (player %d) wins the toss.\n", player);
 }
 
 void writeYourMove()
