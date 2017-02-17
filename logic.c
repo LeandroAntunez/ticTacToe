@@ -7,6 +7,7 @@
  Description : naughts and crosses / tic tac toe
  ============================================================================
  */
+#include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
 #include "ticTacToe.h"
@@ -23,26 +24,38 @@
 #define DIAGONAL1	0
 #define DIAGONAL2	0
 
-static int movesMade;
 static int moves[3][3] = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
 static int horizontal[3];
 static int vertical[3];
 static int diagonal[2];
+static int player1status;
+static int player2status;
 
 int level = 1;
 
 
-void keepCount()
+int keepCount(int option)
 {
-	movesMade++;
+	static int movesMade = 0;
+	if (option == 1) {
+		movesMade++;
+		return 0;
+	} else if (option == 2) {
+		movesMade = 0;
+		return 0;
+	} else {
+		return movesMade;
+	}
 }
 
-int getRemainingMoves()
+void resetMoves()
 {
-	return MATRIX - movesMade;
+	for (int i = 0; i < MATRIX; i++)
+		*(*moves+i) = 0;
+	writeMoves(*moves);
 }
 
-void traslateCharForMove(int x, int y, int player)
+int traslateCharForMove(int x, int y, int player)
 {
 	if 	(x == 97)
 		x = 0;
@@ -58,13 +71,20 @@ void traslateCharForMove(int x, int y, int player)
 	else if (y == 51)
 		y = 2;
 
-	// `x` here is `j` and `y` is `i` ...
-	moves[y][x] = player;
+	// !!! `x` here is `j` and `y` is `i` !!!
+	if (moves[y][x] == 1 || moves[y][x] == -1)
+		return 0;
+	else {
+		moves[y][x] = player;
+		return 1;
+	}
 }
 
 void printDebugMoves()
 {
-	printf("Moves made = %d\n", movesMade);
+	printf("Moves made = %d\n", keepCount(0));
+	printf("Player 1 status -> %d\n", player1status);
+	printf("Player 2 status -> %d\n\n", player2status);
 	for (int i = 0; i < M_SQRT; i++) {
 		printf(" |");
 		for (int j = 0; j < M_SQRT; j++) {
@@ -81,26 +101,24 @@ void printDebugMoves()
 	puts("\n");
 }
 
-void refreshMoves(int player)
+int update(int player)
 {
-	for (int i = 0; i < M_SQRT; i++) {
-		for (int j = 0; j < M_SQRT; j++) {
-			if ( (moves[i][j] != 1) && (moves[i][j] != -1) )
-					moves[i][j] = 0;
-		}
-	}
-}
+	int status;
 
-void callWriteMoves()
-{
-	writeMoves(moves);
+	if (player) {
+		status = calculateStatus(player);
+		writeMoves(*moves);
+	} else {
+		clearStatusArrays();
+		resetMoves();
+	}
+	drawGrid(player);
+
+	return status;
 }
 
 int headsOrTails()
 {
-	// Instantiate the move counter.
-	movesMade = 0;
-
 	for(;;)
 	{
 		int c;
@@ -115,6 +133,7 @@ int headsOrTails()
 		else if (choice == 't')
 			return 1;
 	}
+	return -1;
 }
 
 int coinToss()
@@ -127,8 +146,9 @@ int coinToss()
 
 void computerWinsToss(int player)
 {
-	textWhoWinsToss(player);
 	computerMove(player);
+	update(player);
+	textWhoWinsToss(player);
 }
 
 int yourMove(int player)
@@ -137,7 +157,9 @@ int yourMove(int player)
 	 * Request move from player, x can be either 1, 2 or 3
 	 * an y a, b or c
 	 */
-	refreshMoves(player);
+	int status;
+	status = update(player);
+	player1status = status;
 	textPlayersMove(player);
 
 	int x;
@@ -156,7 +178,7 @@ int yourMove(int player)
 		i++;
 	}
 
-	// Inverse the cordinates if reasonable values.
+	// Inverse the coordinates if reasonable values.
 	if ((x > 48 && x < 52) && (y > 96 && y < 100))
 	{
 		a = x;
@@ -164,42 +186,66 @@ int yourMove(int player)
 		x = b;
 		y = a;
 	}
-	// Repeat untill resonable values are entered ...
+	// Repeat until reasonable values are entered ...
 	else if ((x < 97 || x > 99) || (y < 49 || y > 51))
 	{
 		yourMove(player);
-		return -1;
+		return 0;
 	}
 
 	// Write to the moves array
-	traslateCharForMove(x, y, player);
-	keepCount();
+	if (!traslateCharForMove(x, y, player)) {
+		yourMove(player);
+		return 0;
+	}
 
-	return calculateStatus(player);
+	keepCount(1);
+	
+	status = calculateStatus(player);
+	player1status = status;
+	return status;
 }
 
 int computerMove(int player)
 {
 	int status;
-
-	refreshMoves(player);
+	status = update(player);
+	player2status = status;
 	textPlayersMove(player);
-	waitFor(2); 
-	switch (level)
+	sleep(2);
+
+	switch (status)
 	{
-		case 1:
-			status = randomMove(player);
+		case 0: if (level == 0)
+				randomMove(player);
+			if (level == 1)
+				randomMove(player);
 			break;
-		case 2:
-			status = calculatedMove(player, 0);
+		case 1: if (level == 0)
+				randomMove(player);
+			if (level == 1)
+				randomMove(player);
 			break;
-		case 3:
-			status = calculatedMove(player, 1);
+		case 2: if (level == 0)
+				randomMove(player);
+			if (level == 1)
+				randomMove(player);
+			break;
+		case 3: if (level == 0)
+				randomMove(player);
+			if (level == 1)
+				randomMove(player);
+			break;
+		case 4:
+			printf("Congratulations you are the winner!\n");
 			break;
 		default:
 			break;
 	}
-	keepCount();
+	keepCount(1);
+
+	status = calculateStatus(player);
+	player2status = status;
 	return status;
 }
 
@@ -212,7 +258,8 @@ int randomMove(int player)
 	int choice;
 	srand(time(NULL));
 
-	movesLeft = getRemainingMoves();
+	// Get the quatity of spaces left remaining.
+	movesLeft = MATRIX - keepCount(0);
 
 	if (movesLeft > 1) {
 		choice = rand()%(movesLeft-1);
@@ -235,52 +282,35 @@ int randomMove(int player)
 			{
 				if (count == choice) {
 					moves[i][j] = player;
-					return calculateStatus(player);
 				}
 				count++;
 			}
 		}
 	}
-	printf("I can not move!\n");
-	return -1;
+	return 0;
 }
 
-int calculatedMove(int player, int level)
+void clearStatusArrays()
 {
-	int status;
-	status = calculateStatus(player);
-
-	switch (status)
-	{
-		case 0: if (level == 0)
-				randomMove(player);
-			if (level == 1)
-				randomMove(player);
-			break;
-		case 1: if (level == 0)
-				randomMove(player);
-			if (level == 1)
-				randomMove(player);
-			break;
-		case 2: if (level == 0)
-				randomMove(player);
-			if (level == 1)
-				randomMove(player);
-			break;
-		default:
-			break;
+	for (int i = 0; i < M_SQRT; i++) {
+		*(horizontal+i) = 0;
+		*(vertical+i) = 0;
 	}
-	return calculateStatus(player);
+
+	for (int i = 0; i < 2; i++)
+		*(diagonal+i) = 0;
 }
 
 int calculateStatus(int player)
 {
-	int state = 0;
+	int state;
 	int marker;
 	int i;
 	int j;
 	int x;
 	state = x = 0;
+
+	clearStatusArrays();
 
 	// Horizontal status
 	for (i = 0; i < M_SQRT; i++) {
@@ -297,7 +327,7 @@ int calculateStatus(int player)
 			}
 		}
 		horizontal[i] = x;
-		marker = writeStatusToCell(i, x, HORIZONTAL);
+		marker = writeStatus(x);
 		if (marker > state) {
 			state = marker;
 		}
@@ -319,7 +349,7 @@ int calculateStatus(int player)
 			}
 		}
 		vertical[j] = x;
-		marker = writeStatusToCell(j, x, VERTICAL);
+		marker = writeStatus(x);
 		if (marker > state) {
 			state = marker;
 		}
@@ -340,20 +370,20 @@ int calculateStatus(int player)
 		}
 	}
 	diagonal[0] = x;
-	marker = writeStatusToCell(i, x, DIAGONAL1);
+	marker = writeStatus(x);
 	if (marker > state) {
 		state = marker;
 	}
+
 	x = 0;
+	j = 0;
 
 	// Diagonal2
 	for (i = 2; i >= 0; i--)
 	{
-		j = 0;
-
 		if (moves[i][j] == player)
 		{
-			x = readLineStatus(j, x);
+			x = readLineStatus(i, x);
 		}
 		else if ((moves[i][j] == 1) || (moves[i][j] == -1))
 		{
@@ -363,7 +393,7 @@ int calculateStatus(int player)
 		j++;
 	}
 	diagonal[1] = x;
-	marker = writeStatusToCell(i, x, DIAGONAL1);
+	marker = writeStatus(x);
 	if (marker > state) {
 		state = marker;
 	}
@@ -390,67 +420,49 @@ int readLineStatus(int j, int x)
 			return x;
 		case 2:
 			x = x + 1;
+			return x;
 		default:
 			return x;
 	}
 	return -1;
 }
 
-int writeStatusToCell(int i, int x, int horizontal)
+int writeStatus(int x)
 {
 	// Act upon states 0 through 7
-	//switch(x)
-	//{
-	//	case 0:
-	//		// Empty row.
-	//		return 1;
-	//	case 1:
-	//		if (horizontal) {
-	//			if (moves[i][1] < NEXT) moves[i][1] = NEXT;
-	//			if (moves[i][2] < NEXT) moves[i][2] = NEXT;
-	//		}
-	//		return 2;
-	//	case 2:
-	//		if (horizontal) {
-	//			if (moves[i][0] < NEXT) moves[i][0] = NEXT;
-	//			if (moves[i][2] < NEXT) moves[i][2] = NEXT;
-	//		}
-	//		return 2;
-	//	case 3:
-	//		if (horizontal) {
-	//			if (moves[i][2] < TO_WIN) moves[i][2] = TO_WIN;
-	//		}
-	//		return 3;
-	//	case 4:
-	//		if (horizontal) {
-	//			if (moves[i][0] < NEXT) moves[i][0] = NEXT;
-	//			if (moves[i][1] < NEXT) moves[i][1] = NEXT;
-	//		}
-	//		return 2;
-	//	case 5:
-	//		if (horizontal) {
-	//			if (moves[i][1] < TO_WIN) moves[i][1] = TO_WIN;
-	//		}
-	//		return 3;
-	//	case 6:
-	//		if (horizontal) {
-	//			if (moves[i][0] < TO_WIN) moves[i][0] = TO_WIN;
-	//		}
-	//		return 3;
-	//	case 7:
-	//		// Player wins!
-	//		return 4;
-	//	default:
-	//		// Opponent present.
-	//		return 0;
+	switch(x)
+	{
+		case 0:
+			// Anyone's
+			return 1;
+		case 1:
+			// Good move
+			return 2;
+		case 2:
+			// Good move
+			return 2;
+		case 3:
+			// Move to win
+			return 3;
+		case 4:
+			// Good move
+			return 2;
+		case 5:
+			// Move to win
+			return 3;
+		case 6:
+			// Move to win
+			return 3;
+		case 7:
+			// Player wins!
+			return 4;
+		case 8:
+			// Opponent present.
+			return 0;
+		default:
+			return 0;
 
-	//}
+	}
 	return -1;
-}
-
-void waitFor (unsigned int secs)
-{
-    unsigned int retTime = time(0) + secs;   // Get finishing time.
-    while (time(0) < retTime);               // Loop until it arrives.
 }
 

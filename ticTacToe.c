@@ -1,62 +1,24 @@
-/*
- ============================================================================
- Name        : ticTacToe.c
- Author      : Iain Hill
- Version     : 1
- Copyright   : GPL
- Description : naughts and crosses / tic tac toe
- ============================================================================
- */
-#include "ticTacToe.h"
+/****************************************************
+ *  ticTacToe.c                                         
+ *  Created on: 16-Feb-2017 23:03:22                      
+ *  Implementation of the Class main       
+ *  Original author: iain                     
+ ****************************************************/
 
-#define PLAYER 	 	1
-#define COMPUTER	-1
+#if !defined(EA_38334D00_BAEB_4c33_81F1_8A2BCFE12B32__INCLUDED_)
+#define EA_38334D00_BAEB_4c33_81F1_8A2BCFE12B32__INCLUDED_
 
-int main(void)
-{
-	start();
-	play();
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+
+#ifdef __cplusplus
 }
+#endif
 
-void play()
-{
-	int winner = 0;
 
-	while(!winner)
-	{
-		drawGrid(PLAYER);
-		/* */
-		player1Move(PLAYER);
-		drawGrid(COMPUTER);
-		/* */
-		player2Move(COMPUTER);
-	}
-}
-
-void player1Move(int player)
-{
-	printf("%d", yourMove(player));
-}
-
-void player2Move(int player)
-{
-	printf("%d", computerMove(player));
-}
-
-void start()
-{
-	int choice;
-	int coin;
-	int player = COMPUTER;
-
-	drawGrid(player);
-	choice = headsOrTails();
-	coin = coinToss();
-
-	if (choice != coin) 
-	{
-		computerWinsToss(player);
-	}
-	play();
-}
-
+#endif /*!defined(EA_38334D00_BAEB_4c33_81F1_8A2BCFE12B32__INCLUDED_)*/
+ 

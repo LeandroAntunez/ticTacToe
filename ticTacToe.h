@@ -5,33 +5,29 @@
 #define DEBUG	1
 
 // ticTacToe.c
-void play(void);
-void player1Move(int);
-void player2Move(int);
-void start(void);
+void play(int);
 
 //logic.c
-void keepCount(void);
-int  getRemainingMoves(void);
-void traslateCharForMove(int, int, int);
+int  keepCount(int);
+void resetMoves(void);
+int  traslateCharForMove(int, int, int);
 void printDebugMoves(void);
 void refreshMoves(int);
-void callWriteMoves(void);
+int  update(int);
 int  headsOrTails(void);
 int  coinToss(void);
 void computerWinsToss(int);
 int  yourMove(int);
 int  computerMove(int);
 int  randomMove(int);
-int  calculatedMove(int, int);
+void clearStatusArrays(void);
 int  calculateStatus(int);
 int  readLineStatus(int, int);
-int  writeStatusToCell(int, int, int);
-void waitFor(unsigned int);
+int  writeStatus(int);
 
 // draw.c
 void ticTacToe(void);
-void writeMoves(int[][3]);
+void writeMoves(int*);
 void drawGrid(int);
 void clearScreen(void);
 void textHeadsOrTails(void);

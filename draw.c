@@ -15,12 +15,12 @@
 
 static int grid[6][13] =
 {
-	{  '\t',' ', ' ', 'a', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'c', ' ' },
-	{  '\t','1', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' },
-	{  '\t',' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
-	{  '\t','2', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' },
-	{  '\t',' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
-	{  '\t','3', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' }
+	{ '\t',' ', ' ', 'a', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'c', ' ' },
+	{ '\t','1', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' },
+	{ '\t',' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
+	{ '\t','2', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' },
+	{ '\t',' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
+	{ '\t','3', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' }
 };
 
 void ticTacToe()
@@ -30,25 +30,24 @@ void ticTacToe()
 	puts("\n");
 }
 
-void writeMoves(int moves[][3])
+void writeMoves(int *moves)
 {
-	int x;
-	int y;
+	// map the 3*3 grid into the graphical display
+	int map[9] = { 16, 20, 24, 42, 46, 50, 68, 72, 76 };
 
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
+	for (int i = 0; i < 9; i++) {
 
-			x = ((i+1)*2)-1;
-			y = ((j+1)*4)-1;
-
-			if (moves[i][j] == 1) {
-
-				grid[x][y] = 'O';
-			}
-			else if (moves[i][j] == -1) {
-
-				grid[x][y] = 'X';
-			}
+		if (*(moves+i) == 1)
+		{
+			*(*grid+(map[i])) = 'O';
+		}
+		else if (*(moves+i) == -1)
+		{
+			*(*grid+(map[i])) = 'X';
+		}
+		else if (*(moves+i) == 0)
+		{
+			*(*grid+(map[i])) = ' ';
 		}
 	}
 }
@@ -57,8 +56,6 @@ void drawGrid(int player)
 {
 	clearScreen();
 	ticTacToe();
-	callWriteMoves();
-	calculateStatus(player);
 
 	if (DEBUG)
 		printDebugMoves();
@@ -79,8 +76,6 @@ void clearScreen()
 
 	for (int i = 0; i < max.ws_row; i++)
 	       puts("\n");
-	//printf ("lines %d\n", max.ws_row);
-	//printf ("columns %d\n", max.ws_col);
 }
 
 void textHeadsOrTails()
