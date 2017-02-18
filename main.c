@@ -23,9 +23,9 @@ int main(void)
 
 /*
  * Oh dear, what a mess this first function turned into, hmm ... One of those
- * things to do that you keep ignoring, the tangled mess of a beginning of this
- * programs bears witness to code which has yet to appear, that is my excuse if
- * you are buying.
+ * 'things to do' that you keep ignoring, the tangled mess of a beginning of
+ * this programs bears witness to code which has yet to come, that is my excuse
+ * if you are buying.
  */
 void play(int firstRun)
 {
