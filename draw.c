@@ -27,7 +27,7 @@ static int grid[6][13] =
 };
 
 /*
- * The headding what!
+ * The heading what!
  */
 void ticTacToe()
 {
@@ -85,7 +85,7 @@ void drawGrid(int player)
 }
 
 /*
- * As its name sudgests, this function clears the screen between player moves.
+ * As its name suggests, this function clears the screen between player moves.
  */
 void clearScreen()
 {
@@ -98,16 +98,16 @@ void clearScreen()
 
 /*
  * The wordy part, this function sends all the programs text phrases to the
- * screen, just at the approprate moment in the code, at times creating the
- * illusion of an opponet, whan ther is not realy anyone there, other than the
- * poor NSA operative, who has had the misfortune of being asigned to your sad
- * dilluded arse. Clever stuff this programming thingy, you could get your self
- * in to hot water with this stuff, it is that civilised.
+ * screen, just at the appropriate moment in the code, at times creating the
+ * illusion of an opponent, when there is really no one there, other than the
+ * poor NSA operative, who has had the misfortune of being assigned to your sad
+ * deluded arse. Clever stuff this programming thingy, could get your self
+ * in to hot water with it, it is that civilised.
  */
 void sysOut(int write, int player) {
 	/* 
 	 * If player is > 0 then -1, this corrects the value of 'player' for
-	 * use in the printf statment, when the output is player dependant. 
+	 * use in the printf statement, when the output is player dependant. 
 	 */
 	if (player) player = player - 1;
 
@@ -117,7 +117,7 @@ void sysOut(int write, int player) {
 		"Stalemate, nobody wins ...\n",			// 2
 		"Would you like to play again? ",		// 3
 		"Please choose, heads or tails 'h' or 't' ?\n",	// 4
-		"You have won the the toss.\n",			// 5		
+		"You have won the toss.\n",			// 5		
 		"The computer wins the toss.\n",		// 6
 		"It is your move ...\n",			// 7
 		"My turn, now then, let me see ...\n"		// 8

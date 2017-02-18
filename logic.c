@@ -88,7 +88,7 @@ void printDebugMoves(int player)
 	printf("Moves made = %d\n", keepCount(0));
 	printf("Player 1 status -> %d\n", player1status);
 	printf("Player 2 status -> %d\n\n", player2status);
-	/* The two matricies */
+	/* The two matrices */
 	for (int i = 0; i < M_SQRT; i++) {
 		/* Player one */
 		printf(" |");
@@ -104,7 +104,7 @@ void printDebugMoves(int player)
 		printf("|%2d", horizontal[player2][i]);
 		puts("");
 	}
-	/* Benieth the two maticies */
+	/* Beneath the two matrices */
 	printf("  ------   \t  ------ \n");
 	/* P1 status array */
 	printf("%d ", diagonal[player1][1]);
@@ -121,7 +121,7 @@ void printDebugMoves(int player)
 }
 
 /*
- * Refresh recaculate redraw the grid, wash rince and hang out to dry.
+ * Refresh recalculate redraw the grid, wash rinse and hang out to dry.
  */
 int update(int player)
 {
@@ -162,7 +162,7 @@ int headsOrTails()
 }
 
 /*
- * Returns a 50 / 50 result, a vortual coin toss if you will humour me that,
+ * Returns a 50 / 50 result, a virtual coin toss if you will humour me that,
  * about as random as a dice in space ...
  */
 int coinToss()
@@ -174,7 +174,7 @@ int coinToss()
 }
 
 /*
- * The Computer or player two starts sthe game.
+ * The Computer or player two starts the game.
  */
 void computerWinsToss(int player)
 {
@@ -202,7 +202,7 @@ int yourMove(int player)
 	int a;
 	int b;
 
-	// Do not accept '\n' untill two char are entered.
+	// Do not accept '\n' until two char are entered.
 	while ((c = getchar()) != '\n') {
 		if (i == 0 && c != '\n')
 			x = c;
@@ -240,8 +240,8 @@ int yourMove(int player)
 }
 
 /*
- * The twisted logic of my first ever AI, call me 'Fraankenstein' if you will
- * but I shall have the last laugh yet. [Evil laughter insues, scene fades to
+ * The twisted logic of my first ever AI, call me 'Frankenstein' if you will
+ * but I shall have the last laugh yet. [Evil laughter ensues, scene fades to
  * black]
  */ 
 int computerMove(int player)
@@ -285,8 +285,8 @@ int computerMove(int player)
 }
 
 /*
- * A totaly random move which uses no logic other than how many spaces remain
- * after how many moves, the square is chosen on a 1..n random basis where ne
+ * A totally random move which uses no logic other than how many spaces remain
+ * after how many moves, the square is chosen on a 1..n random basis where n
  * is the number of empty squares remaining.
  */
 int randomMove(int player)
@@ -298,7 +298,7 @@ int randomMove(int player)
 	int choice;
 	srand(time(NULL));
 
-	// Get the quatity of spaces left remaining.
+	// Get the quantity of spaces left remaining.
 	movesLeft = MATRIX - keepCount(0);
 
 	if (movesLeft > 1) {
@@ -311,7 +311,7 @@ int randomMove(int player)
 	}
 
 	/*
-	 * Count empty squares untill move selection is reached.
+	 * Count empty squares until move selection is reached.
 	 */
 	int count = 1;
 
@@ -346,9 +346,9 @@ void clearStatusArrays(int whichArraySet)
 }
 
 /*
- * Fills the status arrays which are then inturn used to calculate the AI's
+ * Fills the status arrays which are then in turn used to calculate the AI's
  * next move, first scanning the status of each horizontal row, then the
- * vertical colums and finaly the two diaganals. 
+ * vertical column and finally the two diagonals. 
  */
 int calculateStatus(int player)
 {
@@ -360,7 +360,7 @@ int calculateStatus(int player)
 	int x;
 	state = marker = x = 0;
 
-	// Player indice rectified for array index.
+	// Player indices rectified for array index.
 	playerMod = player - 1;
 
 	// Horizontal status
@@ -407,7 +407,7 @@ int calculateStatus(int player)
 		x = 0;
 	}
 
-	// Diagonal1
+	// Diagonal one
 	for (i = 0; i < 3; i++)
 	{
 		if (moves[i][i] == player)
@@ -429,7 +429,7 @@ int calculateStatus(int player)
 	x = 0;
 	j = 0;
 
-	// Diagonal2
+	// Diagonal two
 	for (i = 2; i >= 0; i--)
 	{
 		if (moves[i][j] == player)
@@ -453,9 +453,9 @@ int calculateStatus(int player)
 }
 
 /*
- * This function is used by the previos one to count ths places filled by each
- * opponets moves. A value is ascribed to x dependant upon the 'geometry' of
- * the move, that is tos say it position in a binary row, the value returned is
+ * This function is used by the previous one to count this places filled by each
+ * opponents moves. A value is ascribed to x dependant upon the 'geometry' of
+ * the move, that is to say it position in a binary row, the value returned is
  * defined by this position, in the same manor that a value is ascribed to a
  * bit in binary notation.
  */
@@ -488,7 +488,7 @@ int readLineStatus(int j, int x)
 /*
  * The final count of each rows logic is given here, this value allows the
  * computer to understand the state of each row. This value is used in the
- * computation of the computers next move when the difficultiy is set to the
+ * computation of the computers next move when the difficulty is set to the
  * higher or the intermediate value.
  */
 int getStatusValue(int x)

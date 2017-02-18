@@ -12,9 +12,9 @@
 int main(void)
 {
 	/*
-	 * Value 1 represents the initial condition, any subsiquent calls to
+	 * Value 1 represents the initial condition, any subsequent calls to
 	 * play() can be made with other values, to enable the storing of
-	 * variabes between games and also to permit the launcing of different
+	 * variables between games and also to permit the launching of different
 	 * commands upon the games first launch.
 	 */
 	play(1);
@@ -22,8 +22,8 @@ int main(void)
 }
 
 /*
- * Oh dear, what a mess this first function turned into, hmm ... one of those
- * things to do that you keep ignoring, the tangled mess of a begining of this
+ * Oh dear, what a mess this first function turned into, hmm ... One of those
+ * things to do that you keep ignoring, the tangled mess of a beginning of this
  * programs bears witness to code which has yet to appear, that is my excuse if
  * you are buying.
  */
