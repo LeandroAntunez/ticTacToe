@@ -84,17 +84,19 @@ void printDebugMoves(int player)
 	int player1 = PLAYER1 - 1;
 	int player2 = PLAYER2 - 1;
 
+	/* Above the debug squares */
 	printf("Moves made = %d\n", keepCount(0));
 	printf("Player 1 status -> %d\n", player1status);
 	printf("Player 2 status -> %d\n\n", player2status);
-	/* */
+	/* The two matricies */
 	for (int i = 0; i < M_SQRT; i++) {
+		/* Player one */
 		printf(" |");
 		for (int j = 0; j < M_SQRT; j++) {
 			printf("%2d", moves[i][j]);
 		}
 		printf("|%2d\t", horizontal[player1][i]);
-		/* */
+		/* Player two */
 		printf(" |");
 		for (int j = 0; j < M_SQRT; j++) {
 			printf("%2d", moves[i][j]);
@@ -102,20 +104,25 @@ void printDebugMoves(int player)
 		printf("|%2d", horizontal[player2][i]);
 		puts("");
 	}
-	/* */
+	/* Benieth the two maticies */
 	printf("  ------   \t  ------ \n");
+	/* P1 status array */
 	printf("%d ", diagonal[player1][1]);
 	for (int i = 0; i < 3; i++)
 		printf("%2d", vertical[player1][i]);
 	printf(" %2d\t", diagonal[player1][0]);
-	/* */
+	/* P1 status array */
 	printf("%d ", diagonal[player2][1]);
 	for (int i = 0; i < 3; i++)
 		printf("%2d", vertical[player2][i]);
 	printf(" %2d\t", diagonal[player2][0]);
+	/* End of the line */
 	puts("\n");
 }
 
+/*
+ * Refresh recaculate redraw the grid, wash rince and hang out to dry.
+ */
 int update(int player)
 {
 	int status;
@@ -132,6 +139,9 @@ int update(int player)
 	return status;
 }
 
+/*
+ * Ask player to input heads or tails.
+ */
 int headsOrTails()
 {
 	for(;;)
@@ -151,6 +161,10 @@ int headsOrTails()
 	return -1;
 }
 
+/*
+ * Returns a 50 / 50 result, a vortual coin toss if you will humour me that,
+ * about as random as a dice in space ...
+ */
 int coinToss()
 {
 	int coin;
@@ -159,6 +173,9 @@ int coinToss()
 	return coin;
 }
 
+/*
+ * The Computer or player two starts sthe game.
+ */
 void computerWinsToss(int player)
 {
 	computerMove(player);
@@ -222,6 +239,11 @@ int yourMove(int player)
 	return status;
 }
 
+/*
+ * The twisted logic of my first ever AI, call me 'Fraankenstein' if you will
+ * but I shall have the last laugh yet. [Evil laughter insues, scene fades to
+ * black]
+ */ 
 int computerMove(int player)
 {
 	int status;
@@ -262,6 +284,11 @@ int computerMove(int player)
 	return status;
 }
 
+/*
+ * A totaly random move which uses no logic other than how many spaces remain
+ * after how many moves, the square is chosen on a 1..n random basis where ne
+ * is the number of empty squares remaining.
+ */
 int randomMove(int player)
 {
 	/*
@@ -303,6 +330,10 @@ int randomMove(int player)
 	return 0;
 }
 
+/*
+ * Erases the arrays which store each players game status; Called between 
+ * games.
+ */
 void clearStatusArrays(int whichArraySet)
 {
 	for (int i = 0; i < 2*M_SQRT; i++) {
@@ -314,6 +345,11 @@ void clearStatusArrays(int whichArraySet)
 		*(*diagonal+i) = 0;
 }
 
+/*
+ * Fills the status arrays which are then inturn used to calculate the AI's
+ * next move, first scanning the status of each horizontal row, then the
+ * vertical colums and finaly the two diaganals. 
+ */
 int calculateStatus(int player)
 {
 	int playerMod;
@@ -416,6 +452,13 @@ int calculateStatus(int player)
 	return state;
 }
 
+/*
+ * This function is used by the previos one to count ths places filled by each
+ * opponets moves. A value is ascribed to x dependant upon the 'geometry' of
+ * the move, that is tos say it position in a binary row, the value returned is
+ * defined by this position, in the same manor that a value is ascribed to a
+ * bit in binary notation.
+ */
 int readLineStatus(int j, int x)
 {
 	/*
@@ -442,6 +485,12 @@ int readLineStatus(int j, int x)
 	return -1;
 }
 
+/*
+ * The final count of each rows logic is given here, this value allows the
+ * computer to understand the state of each row. This value is used in the
+ * computation of the computers next move when the difficultiy is set to the
+ * higher or the intermediate value.
+ */
 int getStatusValue(int x)
 {
 	// Act upon states 0 through 7

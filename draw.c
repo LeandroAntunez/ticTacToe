@@ -13,6 +13,9 @@
 
 #define OFFSET		35
 
+/*
+ * The grid, quoi ...
+ */
 static int grid[6][13] =
 {
 	{ '\t', ' ', ' ', 'a', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'c', ' ' },
@@ -23,6 +26,9 @@ static int grid[6][13] =
 	{ '\t', '3', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' }
 };
 
+/*
+ * The headding what!
+ */
 void ticTacToe()
 {
 	puts(" _   _     _____         _____           ");
@@ -33,6 +39,10 @@ void ticTacToe()
 	puts("\n");
 }
 
+/*
+ * Translates the store moves which are recorded in the moves array in the file
+ * logic.c into the values displayed on screen in the grid array, found above.
+ */
 void writeMoves(int *moves)
 {
 	// map the 3*3 grid into the graphical display
@@ -55,6 +65,9 @@ void writeMoves(int *moves)
 	}
 }
 
+/*
+ * Write the grid array to screen.
+ */
 void drawGrid(int player)
 {
 	clearScreen();
@@ -71,6 +84,9 @@ void drawGrid(int player)
 	puts("\n");
 }
 
+/*
+ * As its name sudgests, this function clears the screen between player moves.
+ */
 void clearScreen()
 {
 	struct winsize max;
@@ -80,14 +96,20 @@ void clearScreen()
 	       puts("\n");
 }
 
-void sysOut(int write, int player)
-{
+/*
+ * The wordy part, this function sends all the programs text phrases to the
+ * screen, just at the approprate moment in the code, at times creating the
+ * illusion of an opponet, whan ther is not realy anyone there, other than the
+ * poor NSA operative, who has had the misfortune of being asigned to your sad
+ * dilluded arse. Clever stuff this programming thingy, you could get your self
+ * in to hot water with this stuff, it is that civilised.
+ */
+void sysOut(int write, int player) {
 	/* 
-	 * If player is > 0 remove 1, this corrects the value  of player for
-	 * the printf statment. 
+	 * If player is > 0 then -1, this corrects the value of 'player' for
+	 * use in the printf statment, when the output is player dependant. 
 	 */
-	if (player)
-		player = player - 1;
+	if (player) player = player - 1;
 
 	char* text[9] = {
 		"Congratulations, you are the winner!\n",	// 0

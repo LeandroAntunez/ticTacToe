@@ -21,6 +21,12 @@ int main(void)
 	return EXIT_SUCCESS;
 }
 
+/*
+ * Oh dear, what a mess this first function turned into, hmm ... one of those
+ * things to do that you keep ignoring, the tangled mess of a begining of this
+ * programs bears witness to code which has yet to appear, that is my excuse if
+ * you are buying.
+ */
 void play(int firstRun)
 {
 	int choice;
