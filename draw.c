@@ -15,18 +15,21 @@
 
 static int grid[6][13] =
 {
-	{ '\t',' ', ' ', 'a', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'c', ' ' },
-	{ '\t','1', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' },
-	{ '\t',' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
-	{ '\t','2', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' },
-	{ '\t',' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
-	{ '\t','3', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' }
+	{ '\t', ' ', ' ', 'a', ' ', ' ', ' ', 'b', ' ', ' ', ' ', 'c', ' ' },
+	{ '\t', '1', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' },
+	{ '\t', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
+	{ '\t', '2', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' },
+	{ '\t', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-' },
+	{ '\t', '3', ' ', ' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' ', ' ' }
 };
 
 void ticTacToe()
 {
-	puts("\n");
-	printf(" ~~~    Tic'Tac'Toe    ~~~\n");
+	puts(" _   _     _____         _____           ");
+	puts("| |_(_) __|_   _|_ _  __|_   _|__   ___  ");
+	puts("| __| |/ __|| |/ _` |/ __|| |/ _ \\ / _ \\ ");
+	puts("| |_| | (__ | | (_| | (__ | | (_) |  __/ ");
+	puts(" \\__|_|\\___||_|\\__,_|\\___||_|\\___/ \\___| ");
 	puts("\n");
 }
 
@@ -78,25 +81,25 @@ void clearScreen()
 	       puts("\n");
 }
 
-void textHeadsOrTails()
+void sysOut(int write, int player)
 {
-	printf("Please choose, heads or tails h/t ?\n");
-}
+	/* 
+	 * If player is > 0 remove 1, this corrects the value  of player for
+	 * the printf statment. 
+	 */
+	if (player)
+		player = player - 1;
 
-void textWhoWinsToss(int player)
-{
-	printf("The computer (player %d) wins the toss.\n", player);
-}
+	char* text[8] = {
+		"Congratulations, you are the winner!\n",	// 0
+		"I am the winner better luck next time ...\n",	// 1
+		"Would you like to play again? ",		// 2
+		"Please choose, heads or tails h/t ?\n",	// 3
+		"You have won the the toss.\n",			// 4		
+		"The computer wins the toss.\n",		// 5
+		"It is your move, please enter a set of coordinates.\n",//6
+		"My turn, now then, let me see ...\n"		// 7
+	};
 
-void textPlayersMove(int player)
-{
-	if ( player == 1 )
-	{
-		printf("It is your move, please enter a set of coordinates.\n");
-	}
-	else if ( player == -1 )
-	{
-		printf("My turn, now then, let me see ...\n");
-	}
+	printf("%s", text[ write + (player) ]);
 }
-

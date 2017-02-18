@@ -48,7 +48,7 @@ void play(int firstRun)
 		player1 = yourMove(PLAYER);
 		if(player1 == 4) {
 			update(PLAYER);
-			printf("Congratulations, you are the winner!\n");
+			sysOut(0, 0);
 			winner = 1;
 		}
 
@@ -56,13 +56,13 @@ void play(int firstRun)
 			player2 = computerMove(COMPUTER);
 		if(player2 == 4 && !winner) {
 			update(COMPUTER);
-			printf("I am the winner better luck next time ...\n");
+			sysOut(1, 0);
 			winner = 1;
 		}
 
 		if(winner)
 		{
-			printf("Would you like to play again? ");
+			sysOut(2, 0);
 			int c;
 			while ((c = getchar()) != '\n')
 			{

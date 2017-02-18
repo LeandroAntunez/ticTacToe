@@ -20,17 +20,15 @@ void computerWinsToss(int);
 int  yourMove(int);
 int  computerMove(int);
 int  randomMove(int);
-void clearStatusArrays(void);
+void clearStatusArrays(int);
 int  calculateStatus(int);
 int  readLineStatus(int, int);
-int  writeStatus(int);
+int  getStatusValue(int);
 
 // draw.c
 void ticTacToe(void);
 void writeMoves(int*);
 void drawGrid(int);
 void clearScreen(void);
-void textHeadsOrTails(void);
-void textWhoWinsToss(int);
-void textPlayersMove(int);
+void sysOut(int, int);
 

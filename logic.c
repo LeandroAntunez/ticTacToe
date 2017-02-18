@@ -123,7 +123,7 @@ int headsOrTails()
 	{
 		int c;
 		int choice;
-		textHeadsOrTails();
+		sysOut(3, 0);
 		while ((c = getchar()) != '\n')
 			choice = c;
 		putchar('\n');
@@ -148,7 +148,7 @@ void computerWinsToss(int player)
 {
 	computerMove(player);
 	update(player);
-	textWhoWinsToss(player);
+	sysOut(4, player);
 }
 
 int yourMove(int player)
@@ -160,7 +160,7 @@ int yourMove(int player)
 	int status;
 	status = update(player);
 	player1status = status;
-	textPlayersMove(player);
+	sysOut(6, player);
 
 	int x;
 	int y;
@@ -211,7 +211,7 @@ int computerMove(int player)
 	int status;
 	status = update(player);
 	player2status = status;
-	textPlayersMove(player);
+	sysOut(6, player);
 	sleep(2);
 
 	switch (status)
@@ -235,9 +235,6 @@ int computerMove(int player)
 				randomMove(player);
 			if (level == 1)
 				randomMove(player);
-			break;
-		case 4:
-			printf("Congratulations you are the winner!\n");
 			break;
 		default:
 			break;
