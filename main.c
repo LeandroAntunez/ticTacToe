@@ -62,7 +62,7 @@ void play(int firstRun)
 
 		if(winner)
 		{
-			sysOut(2, 0);
+			sysOut(3, 0);
 			int c;
 			while ((c = getchar()) != '\n')
 			{

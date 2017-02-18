@@ -122,7 +122,7 @@ int headsOrTails()
 	{
 		int c;
 		int choice;
-		sysOut(3, 0);
+		sysOut(4, 0);
 		while ((c = getchar()) != '\n')
 			choice = c;
 		putchar('\n');
@@ -159,7 +159,7 @@ int yourMove(int player)
 	int status;
 	status = update(player);
 	player1status = status;
-	sysOut(6, player);
+	sysOut(7, player);
 
 	int x;
 	int y;
@@ -211,7 +211,7 @@ int computerMove(int player)
 	int status;
 	status = update(player);
 	player2status = status;
-	sysOut(6, player);
+	sysOut(7, player);
 	sleep(2);
 
 	switch (status)

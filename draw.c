@@ -89,15 +89,16 @@ void sysOut(int write, int player)
 	if (player)
 		player = player - 1;
 
-	char* text[8] = {
+	char* text[9] = {
 		"Congratulations, you are the winner!\n",	// 0
-		"I am the winner better luck next time ...\n",	// 1
-		"Would you like to play again? ",		// 2
-		"Please choose, heads or tails h/t ?\n",	// 3
-		"You have won the the toss.\n",			// 4		
-		"The computer wins the toss.\n",		// 5
-		"It is your move, please enter a set of coordinates.\n",//6
-		"My turn, now then, let me see ...\n"		// 7
+		"I am the winner, better luck next time ...\n",	// 1
+		"Stalemate, nobody wins ...\n",			// 2
+		"Would you like to play again? ",		// 3
+		"Please choose, heads or tails 'h' or 't' ?\n",	// 4
+		"You have won the the toss.\n",			// 5		
+		"The computer wins the toss.\n",		// 6
+		"It is your move ...\n",			// 7
+		"My turn, now then, let me see ...\n"		// 8
 	};
 
 	printf("%s", text[ write + (player) ]);
