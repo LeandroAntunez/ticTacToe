@@ -31,8 +31,16 @@ static int diagonal[2][2];
 static int player1status;
 static int player2status;
 
+/*
+ * A temporary measure of nothingness.
+ */
 int level = 1;
 
+/*
+ * This function returns the total number of moves made, augments that number
+ * or resets it to zero, dependant upon the int that is entered when the
+ * function is called.
+ */
 int keepCount(int option)
 {
 	static int movesMade = 0;
@@ -47,6 +55,10 @@ int keepCount(int option)
 	}
 }
 
+/*
+ * Resets the moves array to zero and then calls the function that writes the
+ * new status quo to the grid.
+ */
 void resetMoves()
 {
 	for (int i = 0; i < MATRIX; i++)
@@ -54,6 +66,10 @@ void resetMoves()
 	writeMoves(*moves);
 }
 
+/*
+ * Translates the char values entered by the user into the integer values that
+ * correspond to them, and then writes those values to the moves array.
+ */
 int traslateCharForMove(int x, int y, int player)
 {
 	if 	(x == 97)
@@ -79,6 +95,9 @@ int traslateCharForMove(int x, int y, int player)
 	}
 }
 
+/*
+ * ACME debugging tool for ticTacToe. Is this perhaps the embryo of a unit test?
+ */
 void printDebugMoves(int player)
 {
 	int player1 = PLAYER1 - 1;
@@ -140,7 +159,10 @@ int update(int player)
 }
 
 /*
- * Ask player to input heads or tails.
+ * Ask player to input either heads or tails, an ancient form of divination
+ * used by tribes that depend upon counting tokens as their major deities.
+ * This rite predicts the nature of the act that follow in an uncannily precise
+ * manor.
  */
 int headsOrTails()
 {
