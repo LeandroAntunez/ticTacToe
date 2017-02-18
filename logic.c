@@ -81,22 +81,38 @@ int traslateCharForMove(int x, int y, int player)
 
 void printDebugMoves(int player)
 {
+	int player1 = PLAYER1 - 1;
+	int player2 = PLAYER2 - 1;
+
 	printf("Moves made = %d\n", keepCount(0));
 	printf("Player 1 status -> %d\n", player1status);
 	printf("Player 2 status -> %d\n\n", player2status);
+	/* */
 	for (int i = 0; i < M_SQRT; i++) {
 		printf(" |");
 		for (int j = 0; j < M_SQRT; j++) {
 			printf("%2d", moves[i][j]);
 		}
-		printf("|%2d", horizontal[player][i]);
+		printf("|%2d\t", horizontal[player1][i]);
+		/* */
+		printf(" |");
+		for (int j = 0; j < M_SQRT; j++) {
+			printf("%2d", moves[i][j]);
+		}
+		printf("|%2d", horizontal[player2][i]);
 		puts("");
 	}
-	printf("  ------\n");
-	printf("%d ", diagonal[player][1]);
+	/* */
+	printf("  ------   \t  ------ \n");
+	printf("%d ", diagonal[player1][1]);
 	for (int i = 0; i < 3; i++)
-		printf("%2d", vertical[player][i]);
-	printf(" %2d", diagonal[player][0]);
+		printf("%2d", vertical[player1][i]);
+	printf(" %2d\t", diagonal[player1][0]);
+	/* */
+	printf("%d ", diagonal[player2][1]);
+	for (int i = 0; i < 3; i++)
+		printf("%2d", vertical[player2][i]);
+	printf(" %2d\t", diagonal[player2][0]);
 	puts("\n");
 }
 
@@ -201,7 +217,7 @@ int yourMove(int player)
 
 	keepCount(1);
 	
-	status = calculateStatus(player);
+	status = update(player);
 	player1status = status;
 	return status;
 }
@@ -241,7 +257,7 @@ int computerMove(int player)
 	}
 	keepCount(1);
 
-	status = calculateStatus(player);
+	status = update(player);
 	player2status = status;
 	return status;
 }
@@ -300,12 +316,16 @@ void clearStatusArrays(int whichArraySet)
 
 int calculateStatus(int player)
 {
+	int playerMod;
 	int state;
 	int marker;
 	int i;
 	int j;
 	int x;
-	state = x = 0;
+	state = marker = x = 0;
+
+	// Player indice rectified for array index.
+	playerMod = player - 1;
 
 	// Horizontal status
 	for (i = 0; i < M_SQRT; i++) {
@@ -321,7 +341,7 @@ int calculateStatus(int player)
 				break;
 			}
 		}
-		horizontal[player][i] = x;
+		horizontal[playerMod][i] = x;
 		marker = getStatusValue(x);
 		if (marker > state) {
 			state = marker;
@@ -343,7 +363,7 @@ int calculateStatus(int player)
 				break;
 			}
 		}
-		vertical[player][j] = x;
+		vertical[playerMod][j] = x;
 		marker = getStatusValue(x);
 		if (marker > state) {
 			state = marker;
@@ -364,7 +384,7 @@ int calculateStatus(int player)
 			break;
 		}
 	}
-	diagonal[player][0] = x;
+	diagonal[playerMod][0] = x;
 	marker = getStatusValue(x);
 	if (marker > state) {
 		state = marker;
@@ -387,7 +407,7 @@ int calculateStatus(int player)
 		}
 		j++;
 	}
-	diagonal[player][1] = x;
+	diagonal[playerMod][1] = x;
 	marker = getStatusValue(x);
 	if (marker > state) {
 		state = marker;

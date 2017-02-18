@@ -42,15 +42,15 @@ void writeMoves(int *moves)
 
 		if (*(moves+i) == 1)
 		{
-			*(*grid+(map[i])) = 'O';
+			*(*grid+*(map+i)) = 'O';
 		}
 		else if (*(moves+i) == 2)
 		{
-			*(*grid+(map[i])) = 'X';
+			*(*grid+*(map+i)) = 'X';
 		}
 		else if (*(moves+i) == 0)
 		{
-			*(*grid+(map[i])) = ' ';
+			*(*grid+*(map+i)) = ' ';
 		}
 	}
 }

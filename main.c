@@ -9,13 +9,15 @@
  */
 #include "ticTacToe.h"
 
-#define PLAYER 	 	1
-#define COMPUTER	2
-
 int main(void)
 {
+	/*
+	 * Value 1 represents the initial condition, any subsiquent calls to
+	 * play() can be made with other values, to enable the storing of
+	 * variabes between games and also to permit the launcing of different
+	 * commands upon the games first launch.
+	 */
 	play(1);
-
 	return EXIT_SUCCESS;
 }
 
@@ -41,21 +43,21 @@ void play(int firstRun)
 
 			if (choice != coin) 
 			{
-				computerWinsToss(COMPUTER);
+				computerWinsToss(PLAYER2);
 			}
 		}
 
-		player1 = yourMove(PLAYER);
+		player1 = yourMove(PLAYER1);
 		if(player1 == 4) {
-			update(PLAYER);
+			update(PLAYER1);
 			sysOut(0, 0);
 			winner = 1;
 		}
 
 		if(!winner)
-			player2 = computerMove(COMPUTER);
+			player2 = computerMove(PLAYER2);
 		if(player2 == 4 && !winner) {
-			update(COMPUTER);
+			update(PLAYER2);
 			sysOut(1, 0);
 			winner = 1;
 		}
