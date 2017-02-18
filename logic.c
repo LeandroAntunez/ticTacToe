@@ -25,14 +25,13 @@
 #define DIAGONAL2	0
 
 static int moves[3][3] = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
-static int horizontal[3];
-static int vertical[3];
-static int diagonal[2];
+static int horizontal[2][3];
+static int vertical[2][3];
+static int diagonal[2][2];
 static int player1status;
 static int player2status;
 
 int level = 1;
-
 
 int keepCount(int option)
 {
@@ -72,7 +71,7 @@ int traslateCharForMove(int x, int y, int player)
 		y = 2;
 
 	// !!! `x` here is `j` and `y` is `i` !!!
-	if (moves[y][x] == 1 || moves[y][x] == -1)
+	if (moves[y][x] == 1 || moves[y][x] == 2)
 		return 0;
 	else {
 		moves[y][x] = player;
@@ -80,7 +79,7 @@ int traslateCharForMove(int x, int y, int player)
 	}
 }
 
-void printDebugMoves()
+void printDebugMoves(int player)
 {
 	printf("Moves made = %d\n", keepCount(0));
 	printf("Player 1 status -> %d\n", player1status);
@@ -90,14 +89,14 @@ void printDebugMoves()
 		for (int j = 0; j < M_SQRT; j++) {
 			printf("%2d", moves[i][j]);
 		}
-		printf("|%2d", horizontal[i]);
+		printf("|%2d", horizontal[player][i]);
 		puts("");
 	}
 	printf("  ------\n");
-	printf("%d ", diagonal[1]);
+	printf("%d ", diagonal[player][1]);
 	for (int i = 0; i < 3; i++)
-		printf("%2d", vertical[i]);
-	printf(" %2d", diagonal[0]);
+		printf("%2d", vertical[player][i]);
+	printf(" %2d", diagonal[player][0]);
 	puts("\n");
 }
 
@@ -109,7 +108,7 @@ int update(int player)
 		status = calculateStatus(player);
 		writeMoves(*moves);
 	} else {
-		clearStatusArrays();
+		clearStatusArrays(player);
 		resetMoves();
 	}
 	drawGrid(player);
@@ -170,6 +169,7 @@ int yourMove(int player)
 	int a;
 	int b;
 
+	// Do not accept '\n' untill two char are entered.
 	while ((c = getchar()) != '\n') {
 		if (i == 0 && c != '\n')
 			x = c;
@@ -193,7 +193,7 @@ int yourMove(int player)
 		return 0;
 	}
 
-	// Write to the moves array
+	// Write to the moves array.
 	if (!traslateCharForMove(x, y, player)) {
 		yourMove(player);
 		return 0;
@@ -275,7 +275,7 @@ int randomMove(int player)
 	for (int i = 0; i < M_SQRT; i++) {
 		for (int j = 0; j < M_SQRT; j++)
 		{
-			if ( (moves[i][j] != 1) && (moves[i][j] != -1) )
+			if ( (moves[i][j] != 1) && (moves[i][j] != 2) )
 			{
 				if (count == choice) {
 					moves[i][j] = player;
@@ -287,15 +287,15 @@ int randomMove(int player)
 	return 0;
 }
 
-void clearStatusArrays()
+void clearStatusArrays(int whichArraySet)
 {
-	for (int i = 0; i < M_SQRT; i++) {
-		*(horizontal+i) = 0;
-		*(vertical+i) = 0;
+	for (int i = 0; i < 2*M_SQRT; i++) {
+		*(*horizontal+i) = 0;
+		*(*vertical+i) = 0;
 	}
 
-	for (int i = 0; i < 2; i++)
-		*(diagonal+i) = 0;
+	for (int i = 0; i < 4; i++)
+		*(*diagonal+i) = 0;
 }
 
 int calculateStatus(int player)
@@ -307,8 +307,6 @@ int calculateStatus(int player)
 	int x;
 	state = x = 0;
 
-	clearStatusArrays();
-
 	// Horizontal status
 	for (i = 0; i < M_SQRT; i++) {
 		for (j = 0; j < M_SQRT; j++)
@@ -317,14 +315,14 @@ int calculateStatus(int player)
 			{
 				x = readLineStatus(j, x);
 			}
-			else if ((moves[i][j] == 1) || (moves[i][j] == -1))
+			else if ((moves[i][j] == 1) || (moves[i][j] == 2))
 			{
 				x = 8;
 				break;
 			}
 		}
-		horizontal[i] = x;
-		marker = writeStatus(x);
+		horizontal[player][i] = x;
+		marker = getStatusValue(x);
 		if (marker > state) {
 			state = marker;
 		}
@@ -339,14 +337,14 @@ int calculateStatus(int player)
 			{
 				x = readLineStatus(i, x);
 			}
-			else if ((moves[i][j] == 1) || (moves[i][j] == -1))
+			else if ((moves[i][j] == 1) || (moves[i][j] == 2))
 			{
 				x = 8;
 				break;
 			}
 		}
-		vertical[j] = x;
-		marker = writeStatus(x);
+		vertical[player][j] = x;
+		marker = getStatusValue(x);
 		if (marker > state) {
 			state = marker;
 		}
@@ -360,14 +358,14 @@ int calculateStatus(int player)
 		{
 			x = readLineStatus(i, x);
 		}
-		else if ((moves[i][i] == 1) || (moves[i][i] == -1))
+		else if ((moves[i][i] == 1) || (moves[i][i] == 2))
 		{
 			x = 8;
 			break;
 		}
 	}
-	diagonal[0] = x;
-	marker = writeStatus(x);
+	diagonal[player][0] = x;
+	marker = getStatusValue(x);
 	if (marker > state) {
 		state = marker;
 	}
@@ -382,15 +380,15 @@ int calculateStatus(int player)
 		{
 			x = readLineStatus(i, x);
 		}
-		else if ((moves[i][j] == 1) || (moves[i][j] == -1))
+		else if ((moves[i][j] == 1) || (moves[i][j] == 2))
 		{
 			x = 8;
 			break;
 		}
 		j++;
 	}
-	diagonal[1] = x;
-	marker = writeStatus(x);
+	diagonal[player][1] = x;
+	marker = getStatusValue(x);
 	if (marker > state) {
 		state = marker;
 	}
@@ -403,9 +401,9 @@ int readLineStatus(int j, int x)
 	/*
 	 * Use 3 bit binary pattern to read row state.
 	 * 000 -> 0
-	 * 100 -> 1
+	 * 001 -> 1
 	 * 010 -> 2
-	 * ...
+	 *  ...
 	 */
 	switch(j)
 	{
@@ -424,7 +422,7 @@ int readLineStatus(int j, int x)
 	return -1;
 }
 
-int writeStatus(int x)
+int getStatusValue(int x)
 {
 	// Act upon states 0 through 7
 	switch(x)

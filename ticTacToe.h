@@ -11,7 +11,7 @@ void play(int);
 int  keepCount(int);
 void resetMoves(void);
 int  traslateCharForMove(int, int, int);
-void printDebugMoves(void);
+void printDebugMoves(int);
 void refreshMoves(int);
 int  update(int);
 int  headsOrTails(void);

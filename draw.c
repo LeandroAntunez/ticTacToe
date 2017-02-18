@@ -44,7 +44,7 @@ void writeMoves(int *moves)
 		{
 			*(*grid+(map[i])) = 'O';
 		}
-		else if (*(moves+i) == -1)
+		else if (*(moves+i) == 2)
 		{
 			*(*grid+(map[i])) = 'X';
 		}
@@ -61,15 +61,14 @@ void drawGrid(int player)
 	ticTacToe();
 
 	if (DEBUG)
-		printDebugMoves();
+		printDebugMoves(player);
 
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 13; j++)
 			printf("%c",grid[i][j]);
-		putchar('\n');
+		puts("");
 	}
-
-	printf("\n\n");
+	puts("\n");
 }
 
 void clearScreen()

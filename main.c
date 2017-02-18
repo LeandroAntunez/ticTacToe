@@ -10,7 +10,7 @@
 #include "ticTacToe.h"
 
 #define PLAYER 	 	1
-#define COMPUTER	-1
+#define COMPUTER	2
 
 int main(void)
 {
@@ -24,8 +24,8 @@ void play(int firstRun)
 	int choice;
 	int coin;
 	int winner;
-	int player1 = PLAYER;
-	int player2 = COMPUTER;
+	int player1;
+	int player2;
 	player1 = player2 = winner = 0;
 
 	while(!winner)
