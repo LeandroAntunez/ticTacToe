@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define DEBUG	0
+#define DEBUG	1
+
 #define PLAYER1	1
 #define PLAYER2	2
 
@@ -19,11 +20,13 @@ void refreshMoves(int);
 int  update(int);
 int  headsOrTails(void);
 int  coinToss(void);
-void computerWinsToss(int);
+void player2WinsToss(int);
+void playet1WinsTheToss(int);
 int  yourMove(int);
 int  computerMove(int);
 int  randomMove(int);
 int bestPossibleMove(int);
+int checkStaleMate(void);
 void clearStatusArrays(int);
 int  calculateStatus(int);
 int  readLineStatus(int, int);

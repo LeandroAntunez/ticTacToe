@@ -18,18 +18,22 @@
 
 #define NEXT	2
 #define TO_WIN	3
+#define EMPTY	0
+
+#define RESET	0
+#define AUG	1
+#define VALUE	2
 
 #define HORIZONTAL	1
 #define VERTICAL	0
 #define DIAGONAL1	0
 #define DIAGONAL2	0
 
-static int moves[3][3] = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
+static int moves[3][3];
 static int horizontal[2][3];
 static int vertical[2][3];
 static int diagonal[2][2];
-static int player1status;
-static int player2status;
+static int playerStatus[2];
 
 /*
  * A temporary measure of nothingness.
@@ -40,19 +44,26 @@ int level = 1;
  * This function returns the total number of moves made, augments that number
  * or resets it to zero, dependant upon the int that is entered when the
  * function is called.
+ *
+ * 0 -> RESET
+ * 1 -> augment
+ * 2 -> VALUE return the value of movesMade
+ *
  */
 int keepCount(int option)
 {
 	static int movesMade = 0;
-	if (option == 1) {
+
+	if (option == 0) {
+		movesMade = 0;
+		return 0;
+	} else if (option == 1) {
 		movesMade++;
 		return 0;
 	} else if (option == 2) {
-		movesMade = 0;
-		return 0;
-	} else {
 		return movesMade;
 	}
+	return -1;
 }
 
 /*
@@ -97,6 +108,7 @@ int traslateCharForMove(int x, int y, int player)
 
 /*
  * ACME debugging tool for ticTacToe. Is this perhaps the embryo of a unit test?
+ * See the header file, to activate -> DEBUG 1
  */
 void printDebugMoves(int player)
 {
@@ -104,9 +116,9 @@ void printDebugMoves(int player)
 	int player2 = PLAYER2 - 1;
 
 	/* Above the debug squares */
-	printf("Moves made = %d\n", keepCount(0));
-	printf("Player 1 status -> %d\n", player1status);
-	printf("Player 2 status -> %d\n\n", player2status);
+	printf("Moves made = %d\n", keepCount(2));
+	printf("Player 1 status -> %d\n", playerStatus[player1]);
+	printf("Player 2 status -> %d\n\n", playerStatus[player2]);
 	/* The two matrices */
 	for (int i = 0; i < M_SQRT; i++) {
 		/* Player one */
@@ -198,22 +210,38 @@ int coinToss()
 /*
  * The Computer or player two starts the game.
  */
-void computerWinsToss(int player)
+void player2WinsToss(int player)
 {
+	drawGrid(EMPTY);
+	sysOut(5, player);
+	sleep(2);
 	computerMove(player);
 	update(player);
-	sysOut(4, player);
 }
 
+/*
+ * Player one starts the game, this is simply the text output.
+ */
+void playet1WinsTheToss(int player)
+{
+	drawGrid(EMPTY);
+	sysOut(5, player);
+	sleep(2);
+}
+
+/*
+ * Request move from player, x can be either 1, 2 or 3 and y a, b or c.
+ */
 int yourMove(int player)
 {
-	/*
-	 * Request move from player, x can be either 1, 2 or 3
-	 * an y a, b or c
-	 */
+	// If none can move, get out of here.
+	if (checkStaleMate())
+		return 5;
+
+	// Ok play.
 	int status;
 	status = update(player);
-	player1status = status;
+	playerStatus[player-1] = status;
 	sysOut(7, player);
 
 	int x;
@@ -257,7 +285,7 @@ int yourMove(int player)
 	keepCount(1);
 	
 	status = update(player);
-	player1status = status;
+	playerStatus[player-1] = status;
 	return status;
 }
 
@@ -268,9 +296,14 @@ int yourMove(int player)
  */ 
 int computerMove(int player)
 {
+	// If none can move, get out of here.
+	if (checkStaleMate())
+		return 5;
+
+	// Ok play.
 	int status;
 	status = update(player);
-	player2status = status;
+	playerStatus[player-1] = status;
 	sysOut(7, player);
 	sleep(2);
 
@@ -302,13 +335,13 @@ int computerMove(int player)
 	keepCount(1);
 
 	status = update(player);
-	player2status = status;
+	playerStatus[player-1] = status;
 	return status;
 }
 
 /*
- * A totally random move which uses no logic other than how many spaces remain
- * after how many moves, the square is chosen on a 1..n random basis where n
+ * A totally random move using no logic other than, how many spaces remain
+ * after n moves, the square is chosen on a 1..n random basis where n
  * is the number of empty squares remaining.
  */
 int randomMove(int player)
@@ -321,7 +354,7 @@ int randomMove(int player)
 	srand(time(NULL));
 
 	// Get the quantity of spaces left remaining.
-	movesLeft = MATRIX - keepCount(0);
+	movesLeft = MATRIX - keepCount(VALUE);
 
 	if (movesLeft > 1) {
 		choice = rand()%(movesLeft-1);
@@ -354,14 +387,38 @@ int randomMove(int player)
 
 int bestPossibleMove(int player)
 {
+	int opponent;
+
+	/*
+	 * Resolve the player id's so as to find the corresponding index for the
+	 * player status array.
+	 */
+	opponent = (player % 2); 
+	player = player-1;
+
 	if (moves[1][1] == 0) {
 		moves[1][1] = player;
 		return 4;
+	}
 
+	if (playerStatus[player] < playerStatus[opponent])
+		;
 	
 
 
 	return 0;
+}
+
+/*
+ * Check to see if anyone can move.
+ */
+int checkStaleMate()
+{
+	if (MATRIX - keepCount(VALUE) == 0) {
+		return 1;
+	}
+	else 
+		return 0;
 }
 
 /*
@@ -522,7 +579,7 @@ int readLineStatus(int j, int x)
 /*
  * The final count of each rows logic is given here, this value allows the
  * computer to understand the state of each row. This value is used in the
- * computation of the computers next move when the difficulty is set to the
+ * computation of the computers next move, when the difficulty is set to the
  * higher or the intermediate value.
  */
 int getStatusValue(int x)
