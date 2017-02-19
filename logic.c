@@ -354,6 +354,12 @@ int randomMove(int player)
 
 int bestPossibleMove(int player)
 {
+	if (moves[1][1] == 0) {
+		moves[1][1] = player;
+		return 4;
+
+	
+
 
 	return 0;
 }
