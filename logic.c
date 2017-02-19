@@ -352,6 +352,12 @@ int randomMove(int player)
 	return 0;
 }
 
+int bestPossibleMove(int player)
+{
+
+	return 0;
+}
+
 /*
  * Erases the arrays which store each players game status; Called between 
  * games.

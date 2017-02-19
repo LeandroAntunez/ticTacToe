@@ -23,6 +23,7 @@ void computerWinsToss(int);
 int  yourMove(int);
 int  computerMove(int);
 int  randomMove(int);
+int bestPossibleMove(int);
 void clearStatusArrays(int);
 int  calculateStatus(int);
 int  readLineStatus(int, int);
@@ -30,6 +31,7 @@ int  getStatusValue(int);
 
 // draw.c
 void ticTacToe(void);
+void writeGlyphToGrid(int*, int);
 void writeMoves(int*);
 void drawGrid(int);
 void clearScreen(void);
