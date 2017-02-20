@@ -105,7 +105,6 @@ void writeMoves(int *moves)
 	 * just plain hard coded cordinates.
 	 */
 	int map1[9] = { 16, 20, 24, 42, 46, 50, 68, 72, 76 };
-	//int map2[9] = { 44, 55, 66, 278, 289, 300, 512, 523, 534 };
 	int map2[9] = { 86, 97,108, 566, 577, 588, 1046, 1057, 1068 };
 
 	for (int i = 0; i < 9; i++) {
@@ -152,11 +151,34 @@ void scoreBarCharts(int score1, int score2)
 {
 	int bar1 = 1482;
 	int bar2 = bar1 + 6;
+	int max = 10;
 
 	*(*bigScreen+bar1) 	= 'P';
 	*(*bigScreen+bar1+1) 	= '1';
 	*(*bigScreen+bar2) 	= 'P';
 	*(*bigScreen+bar2+1) 	= '2';
+
+	/* Clear */
+	for (int i = 0; i <= max; i++) {
+		*(*bigScreen+bar1 - ((80*i)+1))		= ' ';
+		*(*bigScreen+bar1 - ((80*i)-2))		= ' ';
+		*(*bigScreen+bar1 - (80*(i+1)))		= ' ';
+		*(*bigScreen+bar1 - (80*(i+1))+1)	= ' ';
+	}
+	//*(*bigScreen+bar1 - ((80*(max+1)) ))	= '0';
+	//*(*bigScreen+bar1 - ((80*(max+1))-1))	= '0';
+
+	for (int i = 0; i <= max; i++) {
+		*(*bigScreen+bar2 - ((80*i)+1))		= ' ';
+		*(*bigScreen+bar2 - ((80*i)-2))		= ' ';
+		*(*bigScreen+bar2 - (80*(i+1)))		= ' ';
+		*(*bigScreen+bar2 - (80*(i+1))+1)	= ' ';
+	}
+
+	//*(*bigScreen+bar2 - ((80*(max+1)) ))	= '0';
+	//*(*bigScreen+bar2 - ((80*(max+1))-1))	= 'o';
+
+	/* Draw */
 	for (int i = 1; i <= score1; i++) {
 		*(*bigScreen+bar1 - ((80*i)+1))		= '|';
 		*(*bigScreen+bar1 - ((80*i)-2))		= '|';
@@ -168,7 +190,7 @@ void scoreBarCharts(int score1, int score2)
 		*(*bigScreen+bar2 - ((80*i)+1))		= '|';
 		*(*bigScreen+bar2 - ((80*i)-2))		= '|';
 	}
-	*(*bigScreen+bar2 - ((80*(score2+1)) ))	= '_';
+	*(*bigScreen+bar2 - ((80*(score2+1)) ))		= '_';
 	*(*bigScreen+bar2 - ((80*(score2+1))-1))	= '_';
 }
 
