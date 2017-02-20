@@ -21,7 +21,7 @@
 #define EMPTY	0
 
 #define RESET	0
-#define AUG	1
+#define AUGMENT	1
 #define VALUE	2
 
 #define HORIZONTAL	1
@@ -30,15 +30,14 @@
 #define DIAGONAL2	0
 
 static int moves[3][3];
-static int horizontal[2][3];
-static int vertical[2][3];
-static int diagonal[2][2];
-static int playerStatus[2];
+static int nextMoves[2][3][3];
+static int playerStatus[2][9];
 
 /*
  * A temporary measure of nothingness.
  */
-int level = 1;
+static int level;
+static int myRandom = 1;
 
 /*
  * This function returns the total number of moves made, augments that number
@@ -75,6 +74,9 @@ void resetMoves()
 	for (int i = 0; i < MATRIX; i++)
 		*(*moves+i) = 0;
 	writeMoves(*moves);
+	if (myRandom)
+		level = coinToss(5);
+
 }
 
 /*
@@ -116,9 +118,9 @@ void printDebugMoves(int player)
 	int player2 = PLAYER2 - 1;
 
 	/* Above the debug squares */
-	printf("Moves made = %d\n", keepCount(2));
-	printf("Player 1 status -> %d\n", playerStatus[player1]);
-	printf("Player 2 status -> %d\n\n", playerStatus[player2]);
+	printf("Moves made = %d\n", keepCount(VALUE));
+	printf("Player 1 status -> %d\n", playerStatus[player1][0]);
+	printf("Player 2 status -> %d\n\n", playerStatus[player2][0]);
 	/* The two matrices */
 	for (int i = 0; i < M_SQRT; i++) {
 		/* Player one */
@@ -126,27 +128,38 @@ void printDebugMoves(int player)
 		for (int j = 0; j < M_SQRT; j++) {
 			printf("%2d", moves[i][j]);
 		}
-		printf("|%2d\t", horizontal[player1][i]);
+		printf("|%2d\t", playerStatus[player1][i+1]);
 		/* Player two */
 		printf(" |");
 		for (int j = 0; j < M_SQRT; j++) {
 			printf("%2d", moves[i][j]);
 		}
-		printf("|%2d", horizontal[player2][i]);
+		printf("|%2d", playerStatus[player2][i+1]);
+
+		/* Player one */
+		printf(" |");
+		for (int j = 0; j < M_SQRT; j++) {
+			printf("%2d", nextMoves[player1][i][j]);
+		}
+		/* Player two */
+		printf(" |");
+		for (int j = 0; j < M_SQRT; j++) {
+			printf("%2d", nextMoves[player2][i][j]);
+		}
 		puts("");
 	}
 	/* Beneath the two matrices */
 	printf("  ------   \t  ------ \n");
 	/* P1 status array */
-	printf("%d ", diagonal[player1][1]);
+	printf("%d ", playerStatus[player1][8]);
 	for (int i = 0; i < 3; i++)
-		printf("%2d", vertical[player1][i]);
-	printf(" %2d\t", diagonal[player1][0]);
+		printf("%2d", playerStatus[player1][i+5]);
+	printf(" %2d\t", playerStatus[player1][4]);
 	/* P1 status array */
-	printf("%d ", diagonal[player2][1]);
+	printf("%d ", playerStatus[player2][8]);
 	for (int i = 0; i < 3; i++)
-		printf("%2d", vertical[player2][i]);
-	printf(" %2d\t", diagonal[player2][0]);
+		printf("%2d", playerStatus[player2][i+5]);
+	printf(" %2d\t", playerStatus[player2][4]);
 	/* End of the line */
 	puts("\n");
 }
@@ -154,7 +167,7 @@ void printDebugMoves(int player)
 /*
  * Refresh recalculate redraw the grid, wash rinse and hang out to dry.
  */
-int update(int player)
+int updateGame(int player)
 {
 	int status;
 
@@ -182,6 +195,7 @@ int headsOrTails()
 	{
 		int c;
 		int choice;
+		drawGrid(RESET);
 		sysOut(4, 0);
 		while ((c = getchar()) != '\n')
 			choice = c;
@@ -199,11 +213,11 @@ int headsOrTails()
  * Returns a 50 / 50 result, a virtual coin toss if you will humour me that,
  * about as random as a dice in space ...
  */
-int coinToss()
+int coinToss(int dieSides)
 {
 	int coin;
 	srand(time(NULL));
-	coin = rand()%2;
+	coin = rand()%dieSides;
 	return coin;
 }
 
@@ -216,7 +230,7 @@ void player2WinsToss(int player)
 	sysOut(5, player);
 	sleep(2);
 	computerMove(player);
-	update(player);
+	updateGame(player);
 }
 
 /*
@@ -240,14 +254,14 @@ int yourMove(int player)
 
 	// Ok play.
 	int status;
-	status = update(player);
-	playerStatus[player-1] = status;
+	status = updateGame(player);
+	playerStatus[player-1][0] = status;
 	sysOut(7, player);
 
-	int x;
-	int y;
-	int c;
+	int x = 0;
+	int y = 0;
 	int i = 0;
+	int c;
 
 	int a;
 	int b;
@@ -282,10 +296,10 @@ int yourMove(int player)
 		return 0;
 	}
 
-	keepCount(1);
+	keepCount(AUGMENT);
 	
-	status = update(player);
-	playerStatus[player-1] = status;
+	status = updateGame(player);
+	playerStatus[player-1][0] = status;
 	return status;
 }
 
@@ -302,40 +316,46 @@ int computerMove(int player)
 
 	// Ok play.
 	int status;
-	status = update(player);
-	playerStatus[player-1] = status;
+	int coin;
+	status = updateGame(player);
+	playerStatus[player-1][0] = status;
 	sysOut(7, player);
 	sleep(2);
 
-	switch (status)
+	switch (level)
 	{
-		case 0: if (level == 0)
-				randomMove(player);
-			if (level == 1)
-				randomMove(player);
+		case 0: randomMove(player);
 			break;
-		case 1: if (level == 0)
+		case 1: coin = coinToss(3);
+			if (coin) {
 				randomMove(player);
-			if (level == 1)
-				randomMove(player);
+			} else {
+				bestPossibleMove(player);
+			}
 			break;
-		case 2: if (level == 0)
+		case 2: coin = coinToss(2);
+			if (coin) {
 				randomMove(player);
-			if (level == 1)
-				randomMove(player);
+			} else {
+				bestPossibleMove(player);
+			}
 			break;
-		case 3: if (level == 0)
+		case 3: coin = coinToss(3);
+			if (coin) {
+				bestPossibleMove(player);
+			} else {
 				randomMove(player);
-			if (level == 1)
-				randomMove(player);
+			}
+			break;
+		case 4: bestPossibleMove(player);
 			break;
 		default:
 			break;
 	}
-	keepCount(1);
 
-	status = update(player);
-	playerStatus[player-1] = status;
+	keepCount(AUGMENT);
+	status = updateGame(player);
+	playerStatus[player-1][0] = status;
 	return status;
 }
 
@@ -377,6 +397,7 @@ int randomMove(int player)
 			{
 				if (count == choice) {
 					moves[i][j] = player;
+					return 0;
 				}
 				count++;
 			}
@@ -387,26 +408,94 @@ int randomMove(int player)
 
 int bestPossibleMove(int player)
 {
+	int playerM;
 	int opponent;
+	int value;
 
 	/*
 	 * Resolve the player id's so as to find the corresponding index for the
 	 * player status array.
 	 */
 	opponent = (player % 2); 
-	player = player-1;
+	playerM = player-1;
 
-	if (moves[1][1] == 0) {
+	/*
+	 * If the center square is empty and there is no winning move, move
+	 * there.
+	 */
+	if (moves[1][1] == 0 && playerStatus[playerM][0] != 3) {
 		moves[1][1] = player;
-		return 4;
+		return 0;
 	}
 
-	if (playerStatus[player] < playerStatus[opponent])
-		;
-	
+	/*
+	 * If there is a winning move, take it.
+	 *
+	 * 2*M_SQRT+2 is the number of columns and rows plus the two diagonals.
+	 * The loop starts at one due to the position being used to store the
+	 * status.
+	 */
+	if (playerStatus[playerM][0] == 3) {
+		for (int i = 1; i <= 2*M_SQRT+2; i++) {
+			value = playerStatus[playerM][i];
+			if (value == 3 || value == 5 || value == 6 ) {
+				translateStatus(value, i, player);
+				return 4;
+			}
+		}
+	}
 
+	// If opponent has a winning move, block them.
+	if (playerStatus[opponent][0] == 3) {
+		for (int i = 1; i <= 2*M_SQRT+2; i++) {
+			value = playerStatus[opponent][i];
+			if (value == 3 || value == 5 || value == 6 ) {
+				translateStatus(value, i, player);
+				return 0;
+			}
+		}
+	}
 
+	clearNextMoves();
+
+	// Evaluate next best moves.
+	if (playerStatus[playerM][0] == 2) {
+		for (int i = 1; i <= 2*M_SQRT+2; i++) {
+			value = playerStatus[playerM][i];
+			if (value == 1 || value == 2 || value == 4 ) {
+				translateStatus(value, i, player);
+				translateStatus(value, i, opponent+1);
+			}
+		}
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (nextMoves[playerM][i][j] && nextMoves[opponent][i][j]) {
+					moves[i][j] = player;
+					// TODO make this a random choice if there are
+					// more than one choices.
+					return 0;
+				}
+			}
+		}
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (nextMoves[playerM][i][j]) {
+					moves[i][j] = player;
+					// TODO make this a random choice
+					return 0;
+				}
+			}
+		}
+	}
+
+	randomMove(player);
 	return 0;
+}
+
+void clearNextMoves()
+{
+	for (int i = 0; i < 18; i++)
+		*(**nextMoves+i) = 0;
 }
 
 /*
@@ -427,13 +516,9 @@ int checkStaleMate()
  */
 void clearStatusArrays(int whichArraySet)
 {
-	for (int i = 0; i < 2*M_SQRT; i++) {
-		*(*horizontal+i) = 0;
-		*(*vertical+i) = 0;
+	for (int i = 0; i < 2*M_SQRT+3; i++) {
+		*(*playerStatus+i) = 0;
 	}
-
-	for (int i = 0; i < 4; i++)
-		*(*diagonal+i) = 0;
 }
 
 /*
@@ -468,7 +553,7 @@ int calculateStatus(int player)
 				break;
 			}
 		}
-		horizontal[playerMod][i] = x;
+		playerStatus[playerMod][i+1] = x;
 		marker = getStatusValue(x);
 		if (marker > state) {
 			state = marker;
@@ -490,7 +575,7 @@ int calculateStatus(int player)
 				break;
 			}
 		}
-		vertical[playerMod][j] = x;
+		playerStatus[playerMod][j+5] = x;
 		marker = getStatusValue(x);
 		if (marker > state) {
 			state = marker;
@@ -511,7 +596,7 @@ int calculateStatus(int player)
 			break;
 		}
 	}
-	diagonal[playerMod][0] = x;
+	playerStatus[playerMod][4] = x;
 	marker = getStatusValue(x);
 	if (marker > state) {
 		state = marker;
@@ -534,7 +619,7 @@ int calculateStatus(int player)
 		}
 		j++;
 	}
-	diagonal[playerMod][1] = x;
+	playerStatus[playerMod][8] = x;
 	marker = getStatusValue(x);
 	if (marker > state) {
 		state = marker;
@@ -616,8 +701,171 @@ int getStatusValue(int x)
 			return 0;
 		default:
 			return 0;
+	}
+}
+
+int translateStatus(int state, int line, int player)
+{
+
+	/*
+	 * Act upon states 0 through 7
+	 * 0 -> 000
+	 * 1 -> 001
+	 * 2 -> 010
+	 * 3 -> 011
+	 * 4 -> 100
+	 * 5 -> 101
+	 * 6 -> 110
+	 * 7 -> 111
+	 */
+
+	switch(state)
+	{
+		case 0:
+			// Anyone's
+			// 000
+			break;
+		case 1:
+			// Good move
+			// 001
+			if 	(line == 1) nextMoves[player-1][0][0] = player; 
+			else if (line == 2) nextMoves[player-1][1][0] = player; 
+			else if (line == 3) nextMoves[player-1][2][0] = player; 
+			/* */
+			else if (line == 4) nextMoves[player-1][0][0] = player; 
+			/* */
+			else if (line == 5) nextMoves[player-1][0][0] = player; 
+			else if (line == 6) nextMoves[player-1][0][1] = player; 
+			else if (line == 7) nextMoves[player-1][0][2] = player; 
+			/* */
+			else if (line == 8) nextMoves[player-1][0][2] = player; 
+
+			if 	(line == 1) nextMoves[player-1][0][1] = player; 
+			else if (line == 2) nextMoves[player-1][1][1] = player; 
+			else if (line == 3) nextMoves[player-1][2][1] = player; 
+			/* */
+			else if (line == 4) nextMoves[player-1][1][1] = player; 
+			/* */
+			else if (line == 5) nextMoves[player-1][1][0] = player; 
+			else if (line == 6) nextMoves[player-1][1][1] = player; 
+			else if (line == 7) nextMoves[player-1][1][2] = player; 
+			/* */
+			else if (line == 8) nextMoves[player-1][1][1] = player; 
+
+			break;
+		case 2:
+			// Good move
+			// 010
+			if 	(line == 1) nextMoves[player-1][0][0] = player; 
+			else if (line == 2) nextMoves[player-1][1][0] = player; 
+			else if (line == 3) nextMoves[player-1][2][0] = player; 
+			/* */
+			else if (line == 4) nextMoves[player-1][0][0] = player; 
+			/* */
+			else if (line == 5) nextMoves[player-1][0][0] = player; 
+			else if (line == 6) nextMoves[player-1][0][1] = player; 
+			else if (line == 7) nextMoves[player-1][0][2] = player; 
+			/* */
+			else if (line == 8) nextMoves[player-1][0][2] = player; 
+
+			if 	(line == 1) nextMoves[player-1][0][2] = player; 
+			else if (line == 2) nextMoves[player-1][1][2] = player; 
+			else if (line == 3) nextMoves[player-1][2][2] = player; 
+			/* */
+			else if (line == 4) nextMoves[player-1][2][2] = player; 
+			/* */
+			else if (line == 5) nextMoves[player-1][2][0] = player; 
+			else if (line == 6) nextMoves[player-1][2][1] = player; 
+			else if (line == 7) nextMoves[player-1][2][2] = player; 
+			/* */
+			else if (line == 8) nextMoves[player-1][2][0] = player; 
+
+			break;
+		case 3:
+			// Move to win
+			// 011
+			if 	(line == 1) moves[0][0] = player; 
+			else if (line == 2) moves[1][0] = player; 
+			else if (line == 3) moves[2][0] = player; 
+			/* */
+			else if (line == 4) moves[0][0] = player; 
+			/* */
+			else if (line == 5) moves[0][0] = player; 
+			else if (line == 6) moves[0][1] = player; 
+			else if (line == 7) moves[0][2] = player; 
+			/* */
+			else if (line == 8) moves[0][2] = player; 
+
+			break;
+		case 4:
+			// Good move
+			// 100
+			if 	(line == 1) nextMoves[player-1][0][1] = player; 
+			else if (line == 2) nextMoves[player-1][1][1] = player; 
+			else if (line == 3) nextMoves[player-1][2][1] = player; 
+			/* */
+			else if (line == 4) nextMoves[player-1][1][1] = player; 
+			/* */
+			else if (line == 5) nextMoves[player-1][1][0] = player; 
+			else if (line == 6) nextMoves[player-1][1][1] = player; 
+			else if (line == 7) nextMoves[player-1][1][2] = player; 
+			/* */
+			else if (line == 8) nextMoves[player-1][1][1] = player; 
+
+			if 	(line == 1) nextMoves[player-1][0][2] = player; 
+			else if (line == 2) nextMoves[player-1][1][2] = player; 
+			else if (line == 3) nextMoves[player-1][2][2] = player; 
+			/* */
+			else if (line == 4) nextMoves[player-1][2][2] = player; 
+			/* */
+			else if (line == 5) nextMoves[player-1][2][0] = player; 
+			else if (line == 6) nextMoves[player-1][2][1] = player; 
+			else if (line == 7) nextMoves[player-1][2][2] = player; 
+			/* */
+			else if (line == 8) nextMoves[player-1][2][0] = player; 
+
+			break;
+		case 5:
+			// Move to win
+			// 101
+			if 	(line == 1) moves[0][1] = player; 
+			else if (line == 2) moves[1][1] = player; 
+			else if (line == 3) moves[2][1] = player; 
+			/* */
+			else if (line == 4) moves[1][1] = player; 
+			/* */
+			else if (line == 5) moves[1][0] = player; 
+			else if (line == 6) moves[1][1] = player; 
+			else if (line == 7) moves[1][2] = player; 
+			/* */
+			else if (line == 8) moves[1][1] = player; 
+			break;
+		case 6:
+			// Move to win
+			// 110
+			if 	(line == 1) moves[0][2] = player; 
+			else if (line == 2) moves[1][2] = player; 
+			else if (line == 3) moves[2][2] = player; 
+			/* */
+			else if (line == 4) moves[2][2] = player; 
+			/* */
+			else if (line == 5) moves[2][0] = player; 
+			else if (line == 6) moves[2][1] = player; 
+			else if (line == 7) moves[2][2] = player; 
+			/* */
+			else if (line == 8) moves[2][0] = player; 
+			break;
+		case 7:
+			// Player wins!
+			// 111
+			break;
+		case 8:
+			// Opponent present.
+			break;
+		default:
+			break;
 
 	}
-	return -1;
+	return 0;
 }
 

@@ -216,7 +216,7 @@ void sysOut(int write, int player) {
 		"Would you like to play again? ",		// 3
 		"Please choose, heads or tails 'h' or 't' ?\n",	// 4
 		"You have won the toss.\n",			// 5		
-		"The computer wins the toss.\n",		// 6
+		"I have won the toss.\n",			// 6
 		"It is your move ...\n",			// 7
 		"My turn, now then, let me see ...\n"		// 8
 	};

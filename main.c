@@ -29,7 +29,7 @@ int main(void)
 /*
  * Oh dear, what a mess this first function turned into, hmm ... One of those
  * 'things to do' that you keep ignoring, the tangled mess that is the
- * beginning of this programs, bears witness to code which has yet to come; that
+ * beginning of this program, bears witness to code which has yet to come; that
  * is my excuse, if you are buying.
  */
 void play(int firstRun)
@@ -45,12 +45,12 @@ void play(int firstRun)
 		while (firstRun)
 		{
 /*
- * update refreshes the graphical display, the int entered represents the
+ * updateGame refreshes the graphical display, the int entered represents the
  * player, 1 for player 1 and 2 for player 2, 0 initiates a total reset.
  */
-			update(RESET);
+			updateGame(RESET);
 /*
- * keepCount is used to infor the computer how many moves remain, this function
+ * keepCount is used to inform the computer how many moves remain, this function
  * has several uses, each defined by the interger value entered.
  *
  * 0 -> return count
@@ -61,7 +61,7 @@ void play(int firstRun)
 
 			firstRun = 0;
 			choice = headsOrTails();
-			coin = coinToss();
+			coin = coinToss(2);
 
 			if (choice != coin) 
 			{
@@ -74,7 +74,7 @@ void play(int firstRun)
 
 		status = yourMove(PLAYER1);
 		if(status == WIN) {
-			update(PLAYER1);
+			updateGame(PLAYER1);
 /*
  * This function is found at the end of draw.c, it is simply a text output to
  * screen, the first int defines the situation and the second the player, 0
@@ -86,7 +86,7 @@ void play(int firstRun)
 		}
 		else if (status == STALE_MATE)
 		{
-			update(PLAYER1);
+			updateGame(PLAYER1);
 			// Stale-mate
 			sysOut(2, 0);
 			winner = 1;
@@ -95,12 +95,12 @@ void play(int firstRun)
 		if(!winner)
 			status = computerMove(PLAYER2);
 		if(status == WIN && !winner) {
-			update(PLAYER2);
+			updateGame(PLAYER2);
 			// I win.
 			sysOut(1, 0);
 			winner = 1;
 		} else if (status == STALE_MATE) {
-			update(PLAYER1);
+			updateGame(PLAYER1);
 			// Stale-mate
 			sysOut(2, 0);
 			winner = 1;
@@ -112,6 +112,7 @@ void play(int firstRun)
 			// Play again?
 			sysOut(3, 0);
 			int c;
+
 			while ((c = getchar()) != '\n')
 			{
 				if(c == 'y') {
@@ -122,7 +123,6 @@ void play(int firstRun)
 					break;
 				}
 			}
-			puts("");
 		}
 	}
 }
