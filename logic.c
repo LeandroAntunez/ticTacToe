@@ -32,6 +32,7 @@
 static int moves[3][3];
 static int nextMoves[2][3][3];
 static int playerStatus[2][9];
+static int score[2];
 
 /*
  * A temporary measure of nothingness.
@@ -63,6 +64,21 @@ int keepCount(int option)
 		return movesMade;
 	}
 	return -1;
+}
+
+void keepScore(int player, int inc)
+{
+	player = player -1;
+	if (inc == 0) {
+		score[player] = 0;
+	} else if (inc == 1) {
+		score[player]++;
+		score[player]++;
+	} else if (inc == 2)
+		if (score[player] > 0)
+			score[player]--;
+
+	scoreBarCharts(score[0], score[1]);
 }
 
 /*
@@ -141,6 +157,8 @@ void printDebugMoves(int player)
 	printf("Moves made = %d\n", keepCount(VALUE));
 	printf("Player 1 status -> %d\n", playerStatus[player1][0]);
 	printf("Player 2 status -> %d\n\n", playerStatus[player2][0]);
+	printf("Player 1 score -> %d\n", score[player1]);
+	printf("Player 2 score -> %d\n\n", score[player2]);
 	/* The two matrices */
 	for (int i = 0; i < M_SQRT; i++) {
 		/* Player one */
@@ -198,6 +216,7 @@ int updateGame(int player)
 		clearStatusArrays(player);
 		resetMoves();
 	}
+	scoreBarCharts(score[0], score[1]);
 	drawGrid(player);
 
 	return status;

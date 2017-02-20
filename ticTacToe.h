@@ -14,6 +14,7 @@ void play(int);
 
 //logic.c
 int  keepCount(int);
+void keepScore(int, int);
 void resetMoves(void);
 int  setLevel(int);
 int  traslateCharForMove(int, int, int);
@@ -40,6 +41,7 @@ int  translateStatus(int, int, int);
 void ticTacToe(void);
 void writeGlyphToGrid(int*, int);
 void writeMoves(int*);
+void scoreBarCharts(int, int);
 void drawGrid(int);
 void clearScreen(void);
 void sysOut(int, int);

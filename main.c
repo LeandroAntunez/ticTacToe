@@ -8,12 +8,17 @@
  ============================================================================
  */
 #include "ticTacToe.h"
+#include <unistd.h>
 
 #define RESET	0
 
 #define WIN		4
 #define STALE_MATE	5
 #define UN_SPUN		3
+
+#define RESET	0
+#define INC	1
+#define MINUS2	2
 
 int main(void)
 {
@@ -121,6 +126,8 @@ void play(int firstRun)
  */
 			// You win.
 			sysOut(0, 0);
+			keepScore(PLAYER1, INC);
+			keepScore(PLAYER2, RESET);
 			winner = 1;
 		}
 		else if (status == STALE_MATE)
@@ -128,6 +135,8 @@ void play(int firstRun)
 			updateGame(PLAYER1);
 			// Stale-mate
 			sysOut(2, 0);
+			//keepScore(PLAYER1, MINUS2);
+			//keepScore(PLAYER2, MINUS2);
 			winner = 1;
 		}
 
@@ -137,9 +146,13 @@ void play(int firstRun)
 			updateGame(PLAYER2);
 			// I win.
 			sysOut(1, 0);
+			keepScore(PLAYER2, INC);
+			keepScore(PLAYER1, RESET);
 			winner = 1;
 		} else if (status == STALE_MATE) {
 			updateGame(PLAYER1);
+			//keepScore(PLAYER1, MINUS2);
+			//keepScore(PLAYER2, MINUS2);
 			// Stale-mate
 			sysOut(2, 0);
 			winner = 1;
@@ -148,25 +161,28 @@ void play(int firstRun)
 
 		if(winner)
 		{
+			sleep(3);
+			winner = 0;
+			firstRun = 1;
 			// Play again?
-			sysOut(3, 0);
-			int c;
+			//sysOut(3, 0);
+			//int c;
 
-			while ((c = getchar()) != '\n')
-			{
-				if(c == 'y') {
-					winner = 0;
-					firstRun = 1;
-				}
-				else if (c == 'n') {
-					break;
-				}
-				else if (c == 'm') {
-					winner = 0;
-					firstRun = 1;
-					menu();
-				}
-			}
+			//while ((c = getchar()) != '\n')
+			//{
+			//	if(c == 'y') {
+			//		winner = 0;
+			//		firstRun = 1;
+			//	}
+			//	else if (c == 'n') {
+			//		break;
+			//	}
+			//	else if (c == 'm') {
+			//		winner = 0;
+			//		firstRun = 1;
+			//		menu();
+			//	}
+			//}
 		}
 	}
 }
