@@ -151,7 +151,7 @@ void scoreBarCharts(int score1, int score2)
 {
 	int bar1 = 1482;
 	int bar2 = bar1 + 6;
-	int max = 10;
+	int max = 12;
 
 	*(*bigScreen+bar1) 	= 'P';
 	*(*bigScreen+bar1+1) 	= '1';
@@ -159,7 +159,7 @@ void scoreBarCharts(int score1, int score2)
 	*(*bigScreen+bar2+1) 	= '2';
 
 	/* Clear */
-	for (int i = 0; i <= max; i++) {
+	for (int i = 0; i <= max && score1 <= max; i++) {
 		*(*bigScreen+bar1 - ((80*i)+1))		= ' ';
 		*(*bigScreen+bar1 - ((80*i)-2))		= ' ';
 		*(*bigScreen+bar1 - (80*(i+1)))		= ' ';
@@ -168,7 +168,7 @@ void scoreBarCharts(int score1, int score2)
 	//*(*bigScreen+bar1 - ((80*(max+1)) ))	= '0';
 	//*(*bigScreen+bar1 - ((80*(max+1))-1))	= '0';
 
-	for (int i = 0; i <= max; i++) {
+	for (int i = 0; i <= max && score2 <= max; i++) {
 		*(*bigScreen+bar2 - ((80*i)+1))		= ' ';
 		*(*bigScreen+bar2 - ((80*i)-2))		= ' ';
 		*(*bigScreen+bar2 - (80*(i+1)))		= ' ';
@@ -179,14 +179,14 @@ void scoreBarCharts(int score1, int score2)
 	//*(*bigScreen+bar2 - ((80*(max+1))-1))	= 'o';
 
 	/* Draw */
-	for (int i = 1; i <= score1; i++) {
+	for (int i = 1; i <= score1 && score1 <= max; i++) {
 		*(*bigScreen+bar1 - ((80*i)+1))		= '|';
 		*(*bigScreen+bar1 - ((80*i)-2))		= '|';
 	}
 	*(*bigScreen+bar1 - ((80*(score1+1)) ))		= '_';
 	*(*bigScreen+bar1 - ((80*(score1+1))-1))	= '_';
 
-	for (int i = 1; i <= score2; i++) {
+	for (int i = 1; i <= score2  && score2 <= max; i++) {
 		*(*bigScreen+bar2 - ((80*i)+1))		= '|';
 		*(*bigScreen+bar2 - ((80*i)-2))		= '|';
 	}
@@ -197,37 +197,33 @@ void scoreBarCharts(int score1, int score2)
 /*
  * Write the grid array to screen.
  */
-//void drawGrid(int player)
-//{
-//	clearScreen();
-//	ticTacToe();
-//
-//	if (DEBUG)
-//		printDebugMoves(player);
-//
-//	for (int i = 0; i < 6; i++) {
-//		for (int j = 0; j < 13; j++)
-//			printf("%c",grid[i][j]);
-//		puts("");
-//	}
-//	puts("\n");
-//}
-
-/*
- * Write the grid array to screen.
- */
 void drawGrid(int player)
 {
+
+	struct winsize max;
+	ioctl(0, TIOCGWINSZ , &max);
+
+	for (int i = 0; i < max.ws_row; i++)
+	       puts("\n");
+
 	clearScreen();
 	ticTacToe();
 
 	if (DEBUG)
 		printDebugMoves(player);
 
-	for (int i = 0; i < 19; i++) {
-		for (int j = 0; j < 80; j++)
-			printf("%c",bigScreen[i][j]);
-		puts("");
+	if (max.ws_row > 22) {
+		for (int i = 0; i < 19; i++) {
+			for (int j = 0; j < 80; j++)
+				printf("%c",bigScreen[i][j]);
+			puts("");
+		}
+	} else {
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 13; j++)
+				printf("%c",grid[i][j]);
+			puts("");
+		}
 	}
 	puts("\n");
 }

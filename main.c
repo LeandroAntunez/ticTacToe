@@ -135,8 +135,8 @@ void play(int firstRun)
 			updateGame(PLAYER1);
 			// Stale-mate
 			sysOut(2, 0);
-			//keepScore(PLAYER1, MINUS2);
-			//keepScore(PLAYER2, MINUS2);
+			keepScore(PLAYER1, MINUS2);
+			keepScore(PLAYER2, MINUS2);
 			winner = 1;
 		}
 
@@ -151,10 +151,10 @@ void play(int firstRun)
 			winner = 1;
 		} else if (status == STALE_MATE) {
 			updateGame(PLAYER1);
-			//keepScore(PLAYER1, MINUS2);
-			//keepScore(PLAYER2, MINUS2);
 			// Stale-mate
 			sysOut(2, 0);
+			keepScore(PLAYER1, MINUS2);
+			keepScore(PLAYER2, MINUS2);
 			winner = 1;
 		}
 
