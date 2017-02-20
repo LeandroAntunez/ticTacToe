@@ -13,6 +13,7 @@
 
 #define WIN		4
 #define STALE_MATE	5
+#define UN_SPUN		3
 
 int main(void)
 {
@@ -22,12 +23,42 @@ int main(void)
  * and also to permit the launching of different commands upon the games first
  * launch.
  */
+	menu();
 	play(1);
 	return EXIT_SUCCESS;
 }
 
+void menu()
+{
+	int c = 0;
+	int verif = 0;
+
+	clearScreen();
+	ticTacToe();
+	puts("Welcome to the pro ticTacToe leage and congratulations on making");
+	puts("it this far ... Not many would have bothered.");
+	puts("");
+	puts("Please select the skill level of your opponent:");
+	puts("");
+	puts("		0 -> Random");
+	puts("		1 -> Baby");
+	puts("		2 -> Village idiot");
+	puts("		3 -> Stoner");
+	puts("		4 -> Normal");
+	puts("		5 -> ticTacToe jam Wizard");
+	puts("\n\n\n");
+	printf("Level -> ");
+	
+	while (!verif)
+	{
+		c = getchar();
+		verif = setLevel(c);
+	}
+	resetMoves();
+}
+
 /*
- * Oh dear, what a mess this first function turned into, hmm ... One of those
+ * Oh dear, what a mess this function turned into, hmm ... One of those
  * 'things to do' that you keep ignoring, the tangled mess that is the
  * beginning of this program, bears witness to code which has yet to come; that
  * is my excuse, if you are buying.
@@ -39,6 +70,7 @@ void play(int firstRun)
 	int winner;
 	int status;
 	winner = 0;
+	coin = 3;
 
 	while(!winner)
 	{
@@ -60,8 +92,10 @@ void play(int firstRun)
 			keepCount(RESET);
 
 			firstRun = 0;
-			choice = headsOrTails();
-			coin = coinToss(2);
+			if (coin == UN_SPUN) {
+				choice = headsOrTails();
+				coin = coinToss(2);
+			}
 
 			if (choice != coin) 
 			{
@@ -70,6 +104,11 @@ void play(int firstRun)
 			}
 
 			playet1WinsTheToss(PLAYER1);
+
+			if (coin)
+				coin = 0;
+			else 
+				coin = 1;
 		}
 
 		status = yourMove(PLAYER1);
@@ -121,6 +160,11 @@ void play(int firstRun)
 				}
 				else if (c == 'n') {
 					break;
+				}
+				else if (c == 'm') {
+					winner = 0;
+					firstRun = 1;
+					menu();
 				}
 			}
 		}

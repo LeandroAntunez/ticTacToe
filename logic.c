@@ -37,7 +37,7 @@ static int playerStatus[2][9];
  * A temporary measure of nothingness.
  */
 static int level;
-static int myRandom = 1;
+static int myRandom;
 
 /*
  * This function returns the total number of moves made, augments that number
@@ -74,9 +74,24 @@ void resetMoves()
 	for (int i = 0; i < MATRIX; i++)
 		*(*moves+i) = 0;
 	writeMoves(*moves);
-	if (myRandom)
-		level = coinToss(5);
 
+	if (myRandom)
+		level = coinToss(5)+1;
+
+}
+
+int setLevel(int newLevel)
+{
+	if (newLevel == 48) {
+		myRandom = 1;
+		return 1;
+	}
+	if (newLevel > 48 && newLevel < 54) {
+		myRandom = 0;
+		level = newLevel - 48;
+		return 1;
+	}
+	return 0;
 }
 
 /*
@@ -118,6 +133,11 @@ void printDebugMoves(int player)
 	int player2 = PLAYER2 - 1;
 
 	/* Above the debug squares */
+	if (myRandom)
+		puts("Random mode on.");
+	else
+		puts("Random mode off.");
+	printf("Level= %d\n", level);
 	printf("Moves made = %d\n", keepCount(VALUE));
 	printf("Player 1 status -> %d\n", playerStatus[player1][0]);
 	printf("Player 2 status -> %d\n\n", playerStatus[player2][0]);
@@ -324,30 +344,30 @@ int computerMove(int player)
 
 	switch (level)
 	{
-		case 0: randomMove(player);
+		case 1: randomMove(player);
 			break;
-		case 1: coin = coinToss(3);
+		case 2: coin = coinToss(3);
 			if (coin) {
 				randomMove(player);
 			} else {
 				bestPossibleMove(player);
 			}
 			break;
-		case 2: coin = coinToss(2);
+		case 3: coin = coinToss(2);
 			if (coin) {
 				randomMove(player);
 			} else {
 				bestPossibleMove(player);
 			}
 			break;
-		case 3: coin = coinToss(3);
+		case 4: coin = coinToss(3);
 			if (coin) {
 				bestPossibleMove(player);
 			} else {
 				randomMove(player);
 			}
 			break;
-		case 4: bestPossibleMove(player);
+		case 5: bestPossibleMove(player);
 			break;
 		default:
 			break;
