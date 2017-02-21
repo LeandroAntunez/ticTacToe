@@ -40,19 +40,7 @@ void menu()
 
 	clearScreen();
 	ticTacToe();
-	puts("Welcome to the pro ticTacToe leage and congratulations on making");
-	puts("it this far ... Not many would have bothered.");
-	puts("");
-	puts("Please select the skill level of your opponent:");
-	puts("");
-	puts("		0 -> Random");
-	puts("		1 -> Baby");
-	puts("		2 -> Village idiot");
-	puts("		3 -> Stoner");
-	puts("		4 -> Normal");
-	puts("		5 -> ticTacToe jam Wizard");
-	puts("\n\n\n");
-	printf("Level -> ");
+	sysOutMenu();
 	
 	while (!verif)
 	{

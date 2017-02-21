@@ -44,5 +44,6 @@ void writeMoves(int*);
 void scoreBarCharts(int, int);
 void drawGrid(int);
 void clearScreen(void);
+void sysOutMenu(void);
 void sysOut(int, int);
 

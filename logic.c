@@ -450,6 +450,8 @@ int bestPossibleMove(int player)
 	int playerM;
 	int opponent;
 	int value;
+	int coin;
+	int count;
 
 	/*
 	 * Resolve the player id's so as to find the corresponding index for the
@@ -498,6 +500,8 @@ int bestPossibleMove(int player)
 	clearNextMoves();
 
 	// Evaluate next best moves.
+	count = 0;
+	// Fill the nextMoves grid with the available moves for each player.
 	if (playerStatus[playerM][0] == 2) {
 		for (int i = 1; i <= 2*M_SQRT+2; i++) {
 			value = playerStatus[playerM][i];
@@ -506,21 +510,56 @@ int bestPossibleMove(int player)
 				translateStatus(value, i, opponent+1);
 			}
 		}
+		/*
+		 * Count the number of available places, that are shared
+		 * between the swo, your move will also block and opponents
+		 * move.
+		 */
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (nextMoves[playerM][i][j] && nextMoves[opponent][i][j]) {
-					moves[i][j] = player;
-					// TODO make this a random choice if there are
-					// more than one choices.
+					count++;
+				}
+			}
+		}
+		// Get a randome value within that scope of possible moves.
+		coin = coinToss(count);
+		count = 0;
+		// Make your move.
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (nextMoves[playerM][i][j] && nextMoves[opponent][i][j]) {
+					count++;
+					if (coin == count)
+						moves[i][j] = player;
 					return 0;
 				}
 			}
 		}
+
+		/*
+		 * So there were no shared choices, now do the same for your
+		 * best possible moves.
+		 * First count them ...
+		 */
+		count = 0;
+		coin = 0;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (nextMoves[playerM][i][j]) {
+					count++;
+				}
+			}
+		}
+		// Choose one.
+		coin = coinToss(count);
+		count = 0;
+		// and move there.
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (nextMoves[playerM][i][j]) {
+					count++;
 					moves[i][j] = player;
-					// TODO make this a random choice
 					return 0;
 				}
 			}
