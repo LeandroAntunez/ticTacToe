@@ -151,7 +151,7 @@ void scoreBarCharts(int score1, int score2)
 {
 	int bar1 = 1482;
 	int bar2 = bar1 + 6;
-	int max = 12;
+	int max = 17;
 
 	*(*bigScreen+bar1) 	= 'P';
 	*(*bigScreen+bar1+1) 	= '1';

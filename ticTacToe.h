@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define DEBUG	1
+#define DEBUG	0
 
 #define PLAYER1	1
 #define PLAYER2	2

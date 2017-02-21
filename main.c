@@ -7,6 +7,16 @@
  Description : naughts and crosses / tic tac toe
  ============================================================================
  */
+
+/* TODO 
+ *  - Develop some form of instructions page,
+ *  - Give access to settings.
+ *  - Add better levels, ie weighted probability on all levels as the random
+ *  game is a much better game than any of the set levels.
+ *  - Add a way for players to quit whilst the game is running.
+ *  - Add line thrpugh graphic at the end of the game.
+ */
+
 #include "ticTacToe.h"
 #include <unistd.h>
 
@@ -62,6 +72,7 @@ void play(int firstRun)
 	int coin;
 	int winner;
 	int status;
+	int stale_mate = 0;
 	winner = 0;
 	coin = 3;
 
@@ -117,10 +128,14 @@ void play(int firstRun)
 			keepScore(PLAYER1, INC);
 			keepScore(PLAYER2, RESET);
 			winner = 1;
-		}
+		} else
+			if (status == STALE_MATE)
+				stale_mate = 1;
 
-		if(!winner)
+		if(!winner && !stale_mate)
 			status = computerMove(PLAYER2);
+		stale_mate = 0;
+
 		if(status == WIN && !winner) {
 			updateGame(PLAYER2);
 			// I win.
