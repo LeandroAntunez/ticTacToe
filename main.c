@@ -118,15 +118,6 @@ void play(int firstRun)
 			keepScore(PLAYER2, RESET);
 			winner = 1;
 		}
-		else if (status == STALE_MATE)
-		{
-			updateGame(PLAYER1);
-			// Stale-mate
-			sysOut(2, 0);
-			keepScore(PLAYER1, MINUS2);
-			keepScore(PLAYER2, MINUS2);
-			winner = 1;
-		}
 
 		if(!winner)
 			status = computerMove(PLAYER2);
@@ -137,7 +128,9 @@ void play(int firstRun)
 			keepScore(PLAYER2, INC);
 			keepScore(PLAYER1, RESET);
 			winner = 1;
-		} else if (status == STALE_MATE) {
+		}
+
+		if (status == STALE_MATE) {
 			updateGame(PLAYER1);
 			// Stale-mate
 			sysOut(2, 0);
@@ -152,25 +145,6 @@ void play(int firstRun)
 			sleep(3);
 			winner = 0;
 			firstRun = 1;
-			// Play again?
-			//sysOut(3, 0);
-			//int c;
-
-			//while ((c = getchar()) != '\n')
-			//{
-			//	if(c == 'y') {
-			//		winner = 0;
-			//		firstRun = 1;
-			//	}
-			//	else if (c == 'n') {
-			//		break;
-			//	}
-			//	else if (c == 'm') {
-			//		winner = 0;
-			//		firstRun = 1;
-			//		menu();
-			//	}
-			//}
 		}
 	}
 }
