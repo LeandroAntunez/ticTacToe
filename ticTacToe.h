@@ -10,43 +10,43 @@
 
 // ticTacToe.c
 void menu(void);
-void play(int);
+void play(int firstRun);
 
 //logic.c
-int  keepCount(int);
-void keepScore(int, int);
+int  keepCount(int option);
+void keepScore(int player, int inc);
 void resetMoves(void);
-int  setLevel(int);
+int  setLevel(int newLevel);
 void endLine(void);
-int  traslateCharForMove(int, int, int);
-void printDebugMoves(int);
+int  traslateCharForMove(int x, int y, int player);
+void printDebugMoves(int player);
 void refreshMoves(int);
-int  updateGame(int);
+int  updateGame(int player);
 int  headsOrTails(void);
-int  coinToss(int);
-void player2WinsToss(int);
-void playet1WinsTheToss(int);
-int  yourMove(int);
-int  computerMove(int);
-int  randomMove(int);
-int  bestPossibleMove(int);
+int  coinToss(int howManySides);
+void player2WinsToss(int player);
+void playet1WinsTheToss(int player);
+int  yourMove(int player);
+int  computerMove(int player);
+int  randomMove(int player);
+int  bestPossibleMove(int player);
 void clearNextMoves(void);
 int  checkStaleMate(void);
-void clearStatusArrays(int);
-int  calculateStatus(int);
-int  readLineStatus(int, int);
-int  getStatusValue(int);
-int  translateStatus(int, int, int);
+void clearStatusArrays(int whichArraySet);
+int  calculateStatus(int player);
+int  readLineStatus(int j, int x);
+int  getStatusValue(int x);
+int  translateStatus(int state, int line, int player);
 
 // draw.c
 void ticTacToe(void);
-void writeGlyphToGrid(int*, int);
-void writeMoves(int*);
-void scoreBarCharts(int, int);
-void winningLine(int);
-void drawGrid(int);
+void writeMoves(int *moves);
+void writeGlyphToGrid(int* glyph, int j);
+void scoreBarCharts(int score1, int score2);
+void winningLine(int position);
+void drawGrid(int player);
 void redrawGrid(void);
 void clearScreen(void);
 void sysOutMenu(void);
-void sysOut(int, int);
+void sysOut(int write, int player);
 
