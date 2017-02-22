@@ -1,3 +1,5 @@
-###Tic tac toe
+### ticTacToe
 
-My first attempt at any sort of game AI ...
+A small game built with c for the teminal, I have used c's pointers to design
+the large glyps and board as an exersise in passing arrays as pointers, mapping
+one array into another.

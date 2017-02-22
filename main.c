@@ -15,6 +15,7 @@
  *  game is a much better game than any of the set levels.
  *  - Add a way for players to quit whilst the game is running.
  *  - Add line thrpugh graphic at the end of the game.
+ *  - automtic game end when stalemate is inevitable.
  */
 
 #include "ticTacToe.h"
@@ -98,8 +99,8 @@ void play(int firstRun)
 			firstRun = 0;
 			if (coin == UN_SPUN) {
 				choice = headsOrTails();
-				coin = coinToss(2);
 			}
+			coin = coinToss(2);
 
 			if (choice != coin) 
 			{
@@ -117,7 +118,7 @@ void play(int firstRun)
 
 		status = yourMove(PLAYER1);
 		if(status == WIN) {
-			updateGame(PLAYER1);
+			updateGame(WIN);
 /*
  * This function is found at the end of draw.c, it is simply a text output to
  * screen, the first int defines the situation and the second the player, 0
@@ -137,7 +138,7 @@ void play(int firstRun)
 		stale_mate = 0;
 
 		if(status == WIN && !winner) {
-			updateGame(PLAYER2);
+			updateGame(WIN);
 			// I win.
 			sysOut(1, 0);
 			keepScore(PLAYER2, INC);
@@ -160,6 +161,7 @@ void play(int firstRun)
 			sleep(3);
 			winner = 0;
 			firstRun = 1;
+			drawGrid(0);
 		}
 	}
 }

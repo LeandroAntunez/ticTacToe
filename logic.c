@@ -28,6 +28,7 @@ static int moves[3][3];
 static int nextMoves[2][3][3];
 static int playerStatus[2][9];
 static int score[2];
+static int line;
 
 /*
  * A temporary measure of nothingness.
@@ -88,9 +89,13 @@ void resetMoves()
 
 	if (myRandom)
 		level = coinToss(5)+1;
-
+	line = 0;
+	redrawGrid();
 }
 
+/*
+ * Set the dificulty level.
+ */
 int setLevel(int newLevel)
 {
 	if (newLevel == 48) {
@@ -103,6 +108,18 @@ int setLevel(int newLevel)
 		return 1;
 	}
 	return 0;
+}
+
+void endLine()
+{
+	//for (int i = 0; i < 2*M_SQRT+2; i++) {
+	//	if (*(*playerStatus+i) == 7 || *(*playerStatus+(2*i)) == 7) {
+	//		if (i > 9)
+	//			i = i-9;
+	//		winningLine(i%9);
+	//		return;
+	//	}
+	//}
 }
 
 /*
@@ -210,11 +227,17 @@ int updateGame(int player)
 	if (player) {
 		status = calculateStatus(player);
 		writeMoves(*moves);
-	} else {
+	} 
+	else
+	{
 		clearStatusArrays(player);
 		resetMoves();
 	}
 	scoreBarCharts(score[0], score[1]);
+	if (line) {
+		//sleep(1);
+		winningLine(line);
+	}
 	drawGrid(player);
 
 	return status;
@@ -664,6 +687,7 @@ int calculateStatus(int player)
 			}
 		}
 		playerStatus[playerMod][i+1] = x;
+		if (x == 7) line = i+1;
 		marker = getStatusValue(x);
 		if (marker > state) {
 			state = marker;
@@ -686,6 +710,7 @@ int calculateStatus(int player)
 			}
 		}
 		playerStatus[playerMod][j+5] = x;
+		if (x == 7) line = j+5;
 		marker = getStatusValue(x);
 		if (marker > state) {
 			state = marker;
@@ -707,6 +732,7 @@ int calculateStatus(int player)
 		}
 	}
 	playerStatus[playerMod][4] = x;
+	if (x == 7) line = 4;
 	marker = getStatusValue(x);
 	if (marker > state) {
 		state = marker;
@@ -730,6 +756,7 @@ int calculateStatus(int player)
 		j++;
 	}
 	playerStatus[playerMod][8] = x;
+	if (x == 7) line = 8;
 	marker = getStatusValue(x);
 	if (marker > state) {
 		state = marker;
