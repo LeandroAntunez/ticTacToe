@@ -17,7 +17,6 @@ int  keepCount(int option);
 void keepScore(int player, int inc);
 void resetMoves(void);
 int  setLevel(int newLevel);
-void endLine(void);
 int  traslateCharForMove(int x, int y, int player);
 void printDebugMoves(int player);
 void refreshMoves(int);

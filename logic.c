@@ -110,18 +110,6 @@ int setLevel(int newLevel)
 	return 0;
 }
 
-void endLine()
-{
-	//for (int i = 0; i < 2*M_SQRT+2; i++) {
-	//	if (*(*playerStatus+i) == 7 || *(*playerStatus+(2*i)) == 7) {
-	//		if (i > 9)
-	//			i = i-9;
-	//		winningLine(i%9);
-	//		return;
-	//	}
-	//}
-}
-
 /*
  * Translates the char values entered by the user into the integer values that
  * correspond to them, and then writes those values to the moves array.
