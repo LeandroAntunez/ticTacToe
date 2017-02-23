@@ -89,8 +89,9 @@ void resetMoves()
 
 	if (myRandom)
 		level = coinToss(5)+1;
+
+	redrawGrid(line);
 	line = 0;
-	redrawGrid();
 }
 
 /*
@@ -108,6 +109,11 @@ int setLevel(int newLevel)
 		return 1;
 	}
 	return 0;
+}
+
+void winningLine()
+{
+	drawWinningLine(line);
 }
 
 /*
@@ -222,10 +228,6 @@ int updateGame(int player)
 		resetMoves();
 	}
 	scoreBarCharts(score[0], score[1]);
-	if (line) {
-		//sleep(1);
-		winningLine(line);
-	}
 	drawGrid(player);
 
 	return status;
