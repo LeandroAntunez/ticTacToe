@@ -14,8 +14,7 @@
  *  - Add better levels, ie weighted probability on all levels as the random
  *  game is a much better game than any of the set levels.
  *  - Add a way for players to quit whilst the game is running.
- *  - Add line thrpugh graphic at the end of the game.
- *  - automtic game end when stalemate is inevitable.
+ *  - automatic game end when stalemate is inevitable.
  */
 
 #include "ticTacToe.h"
@@ -88,7 +87,7 @@ void play(int firstRun)
 			updateGame(RESET);
 /*
  * keepCount is used to inform the computer how many moves remain, this function
- * has several uses, each defined by the interger value entered.
+ * has several uses, each defined by the integer value entered.
  *
  * 0 -> return count
  * 1 -> count
@@ -122,7 +121,7 @@ void play(int firstRun)
 /*
  * This function is found at the end of draw.c, it is simply a text output to
  * screen, the first int defines the situation and the second the player, 0
- * being anyone and 1 and 2, player one and two consecutivly.
+ * being anyone and 1 and 2, player one and two consecutively.
  */
 			// You win.
 			sysOut(0, 0);

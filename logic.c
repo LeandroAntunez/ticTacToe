@@ -62,6 +62,11 @@ int keepCount(int option)
 	return -1;
 }
 
+/*
+ * The score for the score bars, this will eventually become another dimension
+ * to this game, triggering the win and some sort of graphical effect when that
+ * happens, for now it triggers a seg-fault ...
+ */
 void keepScore(int player, int inc)
 {
 	player = player -1;
@@ -95,7 +100,7 @@ void resetMoves()
 }
 
 /*
- * Set the dificulty level.
+ * Set the difficulty level.
  */
 int setLevel(int newLevel)
 {
@@ -111,6 +116,10 @@ int setLevel(int newLevel)
 	return 0;
 }
 
+/*
+ * Transfers the command from main.c, to draw the winning line, here it simply
+ * picks up the line reference.
+ */
 void winningLine()
 {
 	drawWinningLine(line);
@@ -456,6 +465,14 @@ int randomMove(int player)
 	return 0;
 }
 
+/*
+ * For now this is the best possible move for the computer intelligence, I am
+ * aware that there is another 'to win' condition that requires programming.
+ * For now it is sufficient, I will add this at a later date.
+ *
+ * TODO add knowledge of the double winning move trap, to be chose if the
+ * occasion arises.
+ */
 int bestPossibleMove(int player)
 {
 	int playerM;
@@ -551,7 +568,7 @@ int bestPossibleMove(int player)
 		// Make your move.
 		if (count > 0) {
 
-			// Pic a random move from within that scope.
+			// Pick a random move from within that scope.
 			if (count > 1)
 				coin = coinToss(count);
 			else 
