@@ -241,8 +241,6 @@ void drawWinningLine(int line)
 			break;
 	}
 
-	/* TODO make a delay to slow down the crossing out of the line this
-	 * currenty causes a graphical glitch, find out why? */
 	usleep(delay*2);
 	if (line > 0 && line < 4)
 	{
@@ -431,7 +429,7 @@ void sysOutMenu()
 	puts("it this far ... Not many would have bothered.");
 	puts("");
 	puts("Please select the skill level of your opponent:");
-	puts("");
+	puts("	Hint ~ Only random is of any real interest.");
 	puts("		0 -> Random");
 	puts("		1 -> Baby");
 	puts("		2 -> Village idiot");

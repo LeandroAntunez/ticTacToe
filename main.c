@@ -134,7 +134,6 @@ void play(int firstRun)
 
 		status = yourMove(PLAYER1);
 		if(status == WIN) {
-			//updateGame(WIN);
 /*
  * This function is found at the end of draw.c, it is simply a text output to
  * screen, the first int defines the situation and the second the player, 0

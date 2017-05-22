@@ -271,19 +271,20 @@ int headsOrTails()
 	for(;;)
 	{
 		int c;
-		int choice = 'h';
 		drawGrid(RESET);
 		sysOut(4, 0);
-		while ((c = getchar()) != '\n')
-			choice = c;
-		putchar('\n');
 
-		if (choice == 'h')
-			return 0;
-		else if (choice == 't')
-			return 1;
+		while ((c = getchar()) != '\n')
+		{
+			if (c == 'h')
+				return 0;
+			else if (c == 't')
+				return 1;
+			else
+				printf("h or t ?");
+		}
 	}
-	return -1;
+	return 1;
 }
 
 /*
@@ -825,9 +826,9 @@ int readLineStatus(int j, int x)
 
 /*
  * The final count of each rows logic is given here, this value allows the
- * computer to understand the state of each row. This value is used in the
- * computation of the computers next move, when the difficulty is set to the
- * higher or the intermediate value.
+ * computer to understand the state of each row and is used in the computation
+ * of the computers next move, when the difficulty is set to the higher or the
+ * intermediate value.
  */
 int getStatusValue(int x)
 {
