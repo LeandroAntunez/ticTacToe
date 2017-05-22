@@ -281,20 +281,15 @@ void drawWinningLine(int line)
  */
 void drawGrid(int player)
 {
+	int max;
 
-	struct winsize max;
-	ioctl(0, TIOCGWINSZ , &max);
-
-	for (int i = 0; i < max.ws_row; i++)
-	       puts("\n");
-
-	clearScreen();
+	max = clearScreen();
 	ticTacToe();
 
 	if (DEBUG)
 		printDebugMoves(player);
 
-	if (max.ws_row > 22) {
+	if (max > 22) {
 		for (int i = 0; i < 19; i++) {
 			for (int j = 0; j < 80; j++)
 				printf("%c",bigScreen[i][j]);
@@ -411,13 +406,15 @@ void redrawGrid(int line)
 /*
  * As its name suggests, this function clears the screen between player moves.
  */
-void clearScreen()
+int clearScreen()
 {
 	struct winsize max;
 	ioctl(0, TIOCGWINSZ , &max);
 
-	for (int i = 0; i < max.ws_row; i++)
+	while (max.ws_row-- > 0)
 	       puts("\n");
+
+	return max.ws_row;
 }
 
 /*
@@ -430,13 +427,14 @@ void sysOutMenu()
 	puts("");
 	puts("Please select the skill level of your opponent:");
 	puts("	Hint ~ Only random is of any real interest.");
+	puts("");
 	puts("		0 -> Random");
 	puts("		1 -> Baby");
 	puts("		2 -> Village idiot");
 	puts("		3 -> Stoner");
 	puts("		4 -> Normal");
 	puts("		5 -> ticTacToe jam Wizard");
-	puts("\n\n\n");
+	puts("\n\n");
 	printf("Level -> ");
 }
 

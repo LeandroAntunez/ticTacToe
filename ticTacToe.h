@@ -72,7 +72,7 @@ void scoreBarCharts(int score1, int score2);
 void drawWinningLine(int line);
 void drawGrid(int player);
 void redrawGrid(int line);
-void clearScreen(void);
+int clearScreen(void);
 void sysOutMenu(void);
 void sysOut(int write, int player);
 
