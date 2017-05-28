@@ -424,18 +424,9 @@ void sysOutMenu()
 {
 	puts("Welcome to the pro ticTacToe league and congratulations on making");
 	puts("it this far ... Not many would have bothered.");
-	puts("");
-	puts("Please select the skill level of your opponent:");
-	puts("	Hint ~ Only random is of any real interest.");
-	puts("");
-	puts("		0 -> Random");
-	puts("		1 -> Baby");
-	puts("		2 -> Village idiot");
-	puts("		3 -> Stoner");
-	puts("		4 -> Normal");
-	puts("		5 -> ticTacToe jam Wizard");
-	puts("\n\n");
-	printf("Level -> ");
+	puts("\n");
+	puts("	~ Press a key to start ~");
+	puts("\n\n\n\n\n\n\n\n");
 }
 
 /*

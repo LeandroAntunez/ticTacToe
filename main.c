@@ -62,7 +62,6 @@ int main(void)
 
 void menu()
 {
-	int c = 0;
 	int verif = 0;
 
 	clearScreen();
@@ -71,8 +70,8 @@ void menu()
 	
 	while (!verif)
 	{
-		c = getchar();
-		verif = setLevel(c);
+		getchar();
+		verif = setLevel(48);
 	}
 	resetMoves();
 }
@@ -139,7 +138,7 @@ void play(int firstRun)
  * screen, the first int defines the situation and the second the player, 0
  * being anyone and 1 and 2, player one and two consecutively.
  */
-			// You win.
+			// You win (text out).
 			sysOut(0, 0);
 			keepScore(PLAYER1, INC);
 			keepScore(PLAYER2, RESET);
@@ -150,6 +149,7 @@ void play(int firstRun)
 
 		if(!winner && !stale_mate)
 			status = computerMove(PLAYER2);
+
 		stale_mate = 0;
 
 		if(status == WIN && !winner) {
@@ -176,7 +176,7 @@ void play(int firstRun)
 			winner = 0;
 			firstRun = 1;
 			winningLine();
-			sleep(3);
+			sleep(2);
 		}
 	}
 }
