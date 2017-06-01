@@ -219,7 +219,7 @@ void drawWinningLine(int line)
 	int lenHoriz = 32;
 	int lenDiag = 15;
 	int startPoint;
-	unsigned int delay = 10000;
+	unsigned int delay = 100000;
 
 	switch(line)
 	{
@@ -241,7 +241,7 @@ void drawWinningLine(int line)
 			break;
 	}
 
-	usleep(delay*2);
+	usleep(delay);
 	if (line > 0 && line < 4)
 	{
 		for (int i = 0; i < lenHoriz; i++) {
@@ -425,8 +425,10 @@ void sysOutMenu()
 	puts("Welcome to the pro ticTacToe league and congratulations on making");
 	puts("it this far ... Not many would have bothered.");
 	puts("\n");
-	puts("	~ Press a key to start ~");
-	puts("\n\n\n\n\n\n\n\n");
+	puts("\tTo be or not to be, that is the question; ...");
+	puts("");
+	puts("	~~~ Press enter to start ~~~");
+	puts("\n\n\n\n\n\n");
 }
 
 /*

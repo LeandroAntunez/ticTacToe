@@ -28,8 +28,6 @@
 /* TODO 
  *  - Develop some form of instructions page,
  *  - Give access to settings.
- *  - Add better levels, ie weighted probability on all levels as the random
- *  game is a much better game than any of the set levels.
  *  - Add a way for players to quit whilst the game is running.
  *  - automatic game end when stalemate is inevitable.
  */
