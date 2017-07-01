@@ -306,7 +306,7 @@ void player2WinsToss(int player)
 {
 	drawGrid(EMPTY);
 	sysOut(5, player);
-	sleep(2);
+	usleep(1000);
 	computerMove(player);
 	updateGame(player);
 }
@@ -318,7 +318,7 @@ void playet1WinsTheToss(int player)
 {
 	drawGrid(EMPTY);
 	sysOut(5, player);
-	sleep(2);
+	usleep(1000);
 }
 
 /*

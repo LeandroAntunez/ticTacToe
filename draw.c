@@ -219,7 +219,7 @@ void drawWinningLine(int line)
 	int lenHoriz = 32;
 	int lenDiag = 15;
 	int startPoint;
-	unsigned int delay = 100000;
+	unsigned int delay = 50000;
 
 	switch(line)
 	{
@@ -315,7 +315,7 @@ void redrawGrid(int line)
 	int two   = 720;
 	int three = 1200;
 
-	int five  = 9;
+	int five  = 10;
 	int six   = 20;
 	int seven = 31;
 
@@ -410,11 +410,9 @@ int clearScreen()
 {
 	struct winsize max;
 	ioctl(0, TIOCGWINSZ , &max);
-
-	while (max.ws_row-- > 0)
-	       puts("\n");
-
+	puts("\033[H\033[J");	/* Clear screen */
 	return max.ws_row;
+
 }
 
 /*
