@@ -219,7 +219,7 @@ void drawWinningLine(int line)
 	int lenHoriz = 32;
 	int lenDiag = 15;
 	int startPoint;
-	unsigned int delay = 50000;
+	unsigned int delay = 30000;
 
 	switch(line)
 	{
