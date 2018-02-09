@@ -176,7 +176,7 @@ int traslateCharForMove(int x, int y, int player)
  * ACME debugging tool for ticTacToe. Is this perhaps the embryo of a unit test?
  * See the header file, to activate -> DEBUG 1
  */
-void printDebugMoves(int player)
+void printDebugMoves()
 {
 	int player1 = PLAYER1 - 1;
 	int player2 = PLAYER2 - 1;
@@ -251,7 +251,7 @@ int updateGame(int player)
 	} 
 	else
 	{
-		clearStatusArrays(player);
+		clearStatusArrays();
 		resetMoves();
 	}
 	scoreBarCharts(score[0], score[1]);
@@ -673,7 +673,7 @@ int checkStaleMate()
  * Erases the arrays which store each players game status; Called between 
  * games.
  */
-void clearStatusArrays(int whichArraySet)
+void clearStatusArrays()
 {
 	for (int i = 0; i < 2*M_SQRT+3; i++) {
 		*(*playerStatus+i) = 0;

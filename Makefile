@@ -1,7 +1,7 @@
 EXE	= ticTacToe
 
-SRCS	= draw.c logic.c main.c
-OBJS	= $(SRCS:.c=.o)
+SRCS	= src/draw.c src/logic.c src/main.c
+OBJS	= $(SRCS:.c=*.o)
 
 CC	= gcc
 
@@ -20,4 +20,4 @@ distclean: clean
 
 $(EXE):	$(OBJS)
 
-$(OBJS): ticTacToe.h Makefile
+$(OBJS): src/ticTacToe.h Makefile
