@@ -1,7 +1,7 @@
 EXE	= ticTacToe
 
 SRCS	= src/draw.c src/logic.c src/main.c
-OBJS	= $(SRCS:.c=*.o)
+OBJS	= $(SRCS:.c=.o)
 
 CC	= gcc
 
@@ -18,6 +18,9 @@ clean:
 distclean: clean
 	rm -f $(EXE)
 
-$(EXE):	$(OBJS)
+#$(EXE): $(OBJS)
+
+$(EXE) : $(OBJS)
+	$(CC) -o $(EXE) $(OBJS)
 
 $(OBJS): src/ticTacToe.h Makefile
