@@ -247,7 +247,7 @@ void drawWinningLine(int line)
 		for (int i = 0; i < lenHoriz; i++) {
 			*(*bigScreen+startPoint+i+1) = '-';
 			usleep(delay);
-			drawGrid(0);
+			drawGrid();
 		}
 	}
 	else if (line == 4)
@@ -255,7 +255,7 @@ void drawWinningLine(int line)
 		for (int i = 0; i < lenDiag; i++) {
 			*(*bigScreen+startPoint+(80*i)+(i*2)) = '\\';
 			usleep(delay);
-			drawGrid(0);
+			drawGrid();
 		}
 	}
 	else if (line > 4 && line < 8)
@@ -263,7 +263,7 @@ void drawWinningLine(int line)
 		for (int i = 0; i < lenVerti; i++) {
 			*(*bigScreen+startPoint-(80*i)) = '|';
 			usleep(delay);
-			drawGrid(0);
+			drawGrid();
 		}
 	}
 	else if (line == 8)
@@ -271,7 +271,7 @@ void drawWinningLine(int line)
 		for (int i = 0; i < lenDiag; i++) {
 			*(*bigScreen+startPoint-(80*i)+(i*2)) = '/';
 			usleep(delay);
-			drawGrid(0);
+			drawGrid();
 		}
 	}
 }
@@ -279,7 +279,7 @@ void drawWinningLine(int line)
 /*
  * Write the grid array to screen.
  */
-void drawGrid(int player)
+void drawGrid()
 {
 	int max;
 
@@ -287,7 +287,7 @@ void drawGrid(int player)
 	ticTacToe();
 
 	if (DEBUG)
-		printDebugMoves(player);
+		printDebugMoves();
 
 	if (max > 22) {
 		for (int i = 0; i < 19; i++) {

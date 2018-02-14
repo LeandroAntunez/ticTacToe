@@ -6,6 +6,7 @@ OBJS	= $(SRCS:.c=.o)
 CC	= gcc
 
 CFLAGS	= -Wextra -Wall -pedantic
+CFLAGS	+= -Wstrict-prototypes
 #CFLAGS	+= -O
 CFLAGS	+= -g
 

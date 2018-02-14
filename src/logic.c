@@ -255,7 +255,7 @@ int updateGame(int player)
 		resetMoves();
 	}
 	scoreBarCharts(score[0], score[1]);
-	drawGrid(player);
+	drawGrid();
 
 	return status;
 }
@@ -271,7 +271,7 @@ int headsOrTails()
 	for(;;)
 	{
 		int c;
-		drawGrid(RESET);
+		drawGrid();
 		sysOut(4, 0);
 
 		while ((c = getchar()) != '\n')
@@ -304,7 +304,7 @@ int coinToss(int howManySides)
  */
 void player2WinsToss(int player)
 {
-	drawGrid(EMPTY);
+	drawGrid();
 	sysOut(5, player);
 	usleep(1000);
 	computerMove(player);
@@ -316,7 +316,7 @@ void player2WinsToss(int player)
  */
 void playet1WinsTheToss(int player)
 {
-	drawGrid(EMPTY);
+	drawGrid();
 	sysOut(5, player);
 	usleep(1000);
 }
