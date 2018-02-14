@@ -1,7 +1,11 @@
-EXE	= ticTacToe
+srcdir	= src/
+objdir	= $(srcdir)
+exedir	=
 
-SRCS	= src/draw.c src/logic.c src/main.c
-OBJS	= $(SRCS:.c=.o)
+EXE	= $(exedir)ticTacToe
+
+SRCS	= $(srcdir)draw.c $(srcdir)logic.c $(srcdir)main.c
+OBJS	= $(SRCS:$(srcdir)%.c=$(objdir)%.o)
 
 # Enable Debian/Ubuntu build hardening unless already
 # enabled/disabled  — see hardened-cc(1) —  and ensure
@@ -21,14 +25,22 @@ CFLAGS	+= -g
 all:	$(EXE)
 
 clean:
-	rm -f $(OBJS)
+	rm -f -- $(OBJS)
 
 distclean: clean
-	rm -f $(EXE)
+	rm -f -- $(EXE)
 
 #$(EXE): $(OBJS)
 
-$(EXE) : $(OBJS)
-	$(CC) -o $(EXE) $(OBJS)
+$(EXE):	$(OBJS)
+	$(CC) -o $@ $(OBJS)
 
-$(OBJS): src/ticTacToe.h Makefile
+$(OBJS): $(srcdir)ticTacToe.h Makefile
+
+# When srcdir == objdir, make's default implicit rule works fine.
+# However, when srcdir ≠ objdir, it never matches, because (e.g.,
+# with `make objdir=foo- ...') foo-draw.o differs not just in the
+# suffix (.c → .o) but also in the prefix (src/ → foo-).  Hence,
+# we redefine the implicit rule to also work in that situation.
+$(objdir)%.o: $(srcdir)%.c
+	$(CC) -c $(CFLAGS) $< -o $@
