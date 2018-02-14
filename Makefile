@@ -6,6 +6,7 @@ EXE	= $(exedir)ticTacToe
 
 SRCS	= $(srcdir)draw.c $(srcdir)logic.c $(srcdir)main.c
 OBJS	= $(SRCS:$(srcdir)%.c=$(objdir)%.o)
+OUTDIRS	= $(dir $(objdir) $(exedir))
 
 # Enable Debian/Ubuntu build hardening unless already
 # enabled/disabled  — see hardened-cc(1) —  and ensure
@@ -29,13 +30,14 @@ clean:
 
 distclean: clean
 	rm -f -- $(EXE)
+	-rmdir --ignore-fail-on-non-empty -- $(OUTDIRS)
 
 #$(EXE): $(OBJS)
 
 $(EXE):	$(OBJS)
 	$(CC) -o $@ $(OBJS)
 
-$(OBJS): $(srcdir)ticTacToe.h Makefile
+$(OBJS): $(srcdir)ticTacToe.h Makefile | $(OUTDIRS)
 
 # When srcdir == objdir, make's default implicit rule works fine.
 # However, when srcdir ≠ objdir, it never matches, because (e.g.,
@@ -44,3 +46,6 @@ $(OBJS): $(srcdir)ticTacToe.h Makefile
 # we redefine the implicit rule to also work in that situation.
 $(objdir)%.o: $(srcdir)%.c
 	$(CC) -c $(CFLAGS) $< -o $@
+
+%/:
+	mkdir -p -- $@
