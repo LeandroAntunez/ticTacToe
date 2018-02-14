@@ -1,5 +1,6 @@
 srcdir	= src/
-objdir	= $(srcdir)
+#objdir	= $(srcdir)
+objdir	= build/
 exedir	=
 
 EXE	= $(exedir)ticTacToe
