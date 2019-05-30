@@ -46,3 +46,19 @@ It is your move ...
     
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+## Internationalization
+
+    In order to play in other languages, you have to execute the new line in
+    the terminal:
+    
+    ```
+    LANGUAGE=<language_COUNTRY> ./Makefile
+    ```
+    
+    For example, in spanish from Spain:
+    
+    ```
+    LANGUAGE=es_ES ./Makefile
+    ```

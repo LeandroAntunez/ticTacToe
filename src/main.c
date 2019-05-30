@@ -45,8 +45,20 @@
 #define INC	1
 #define MINUS2	2
 
+/* Set libraries for internationalization */
+#include <libintl.h>
+#include <locale.h>
+
+/* Set constant for internationalization */
+#define _(STRING) gettext(STRING)
+
 int main(void)
 {
+/* Set environment for internationalization */
+	setlocale (LC_ALL, "");
+	bindtextdomain ("tictactoe", "./locales");
+	textdomain ("tictactoe");
+
 /*
  * Value 1 represents the initial condition, any subsequent calls to play() can
  * be made with other values, to enable the storing of variables between games

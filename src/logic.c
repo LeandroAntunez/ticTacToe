@@ -30,6 +30,10 @@
 #include <time.h>
 #include "ticTacToe.h"
 
+/* Set libraries for internationalization */
+#include <libintl.h>
+#include <locale.h>
+
 /* The size of the playing board, the 'hash'. */
 #define MATRIX	9
 #define M_SQRT	3
@@ -41,6 +45,9 @@
 #define RESET	0
 #define AUGMENT	1
 #define VALUE	2
+
+/* Set constant for internationalization */
+#define _(STRING) gettext(STRING)
 
 static int moves[3][3];
 static int nextMoves[2][3][3];
@@ -183,15 +190,15 @@ void printDebugMoves()
 
 	/* Above the debug squares */
 	if (myRandom)
-		puts("Random mode on.");
+		puts(_("Random mode on."));
 	else
-		puts("Random mode off.");
-	printf("Level= %d\n", level);
-	printf("Moves made = %d\n", keepCount(VALUE));
-	printf("Player 1 status -> %d\n", playerStatus[player1][0]);
-	printf("Player 2 status -> %d\n\n", playerStatus[player2][0]);
-	printf("Player 1 score -> %d\n", score[player1]);
-	printf("Player 2 score -> %d\n\n", score[player2]);
+		puts(_("Random mode off."));
+	printf(_("Level= %d\n"), level);
+	printf(_("Moves made = %d\n"), keepCount(VALUE));
+	printf(_("Player 1 status -> %d\n"), playerStatus[player1][0]);
+	printf(_("Player 2 status -> %d\n\n"), playerStatus[player2][0]);
+	printf(_("Player 1 score -> %d\n"), score[player1]);
+	printf(_("Player 2 score -> %d\n\n"), score[player2]);
 	/* The four matrices */
 	for (int i = 0; i < M_SQRT; i++) {
 		/* Player one */
@@ -281,7 +288,7 @@ int headsOrTails()
 			else if (c == 't')
 				return 1;
 			else
-				printf("h or t ?");
+				printf(_("h or t ?"));
 		}
 	}
 	return 1;

@@ -35,6 +35,13 @@
 #include <sys/ioctl.h>
 #include "ticTacToe.h"
 
+/* Set libraries for internationalization */
+#include <libintl.h>
+#include <locale.h>
+
+/* Set constant for internationalization */
+#define _(STRING) gettext(STRING)
+
 /*
  * The heading what!
  */
@@ -420,12 +427,12 @@ int clearScreen()
  */
 void sysOutMenu()
 {
-	puts("Welcome to the pro ticTacToe league and congratulations on making");
-	puts("it this far ... Not many would have bothered.");
+	puts(_("Welcome to the pro ticTacToe league and congratulations on making"));
+	puts(_("it this far ... Not many would have bothered."));
 	puts("\n");
-	puts("\tTo be or not to be, that is the question; ...");
+	puts(_("\tTo be or not to be, that is the question; ..."));
 	puts("");
-	puts("	~~~ Press enter to start ~~~");
+	puts(_("	~~~ Press enter to start ~~~"));
 	puts("\n\n\n\n\n\n");
 }
 
@@ -446,15 +453,15 @@ void sysOut(int write, int player) {
 	if (player) player = player - 1;
 
 	char* text[9] = {
-		"Congratulations, you are the winner!",			// 0
-		"I am the winner, better luck next time ...",		// 1
-		"Stale-mate, nobody wins ...",				// 2
-		"Would you like to play again? y/n or m for menu: ",	// 3
-		"Please choose, heads or tails 'h' or 't' ? ",		// 4
-		"You have won the toss. ",				// 5
-		"I have won the toss. ",				// 6
-		"It is your move ...  ",				// 7
-		"My turn, now then, let me see ..."			// 8
+		_("Congratulations, you are the winner!"),		// 0
+		_("I am the winner, better luck next time ..."),	// 1
+		_("Stale-mate, nobody wins ..."),			// 2
+		_("Would you like to play again? y/n or m for menu: "),	// 3
+		_("Please choose, heads or tails 'h' or 't' ? "),	// 4
+		_("You have won the toss. "),				// 5
+		_("I have won the toss. "),				// 6
+		_("It is your move ...  "),				// 7
+		_("My turn, now then, let me see ...")			// 8
 	};
 
 	printf("%s", text[ write + (player) ]);
