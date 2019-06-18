@@ -287,6 +287,8 @@ int headsOrTails()
 				return 0;
 			else if (c == 't')
 				return 1;
+			else if (c == 'q')
+				exit(0);
 			else
 				printf(_("h or t ?"));
 		}
@@ -357,6 +359,8 @@ int yourMove(int player)
 			x = c;
 		if (i == 1 && c != '\n')
 			y = c;
+		if (i == 0 && c == 'q')
+			exit(0);
 		i++;
 	}
 

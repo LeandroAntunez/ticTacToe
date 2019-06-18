@@ -433,6 +433,8 @@ void sysOutMenu()
 	puts(_("\tTo be or not to be, that is the question; ..."));
 	puts("");
 	puts(_("	~~~ Press enter to start ~~~"));
+	puts("");
+	puts(_("(Once the game begins, you can input <q> to quit.)"));
 	puts("\n\n\n\n\n\n");
 }
 

@@ -1,19 +1,20 @@
-# Internationalization for TicTacToe
-# This file is distributed under the same license as the tictactoe package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: tictactoe 1.0\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-30 11:04-0300\n"
+"POT-Creation-Date: 2019-06-18 15:08-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/draw.c:433
@@ -24,19 +25,26 @@ msgstr ""
 msgid "\t~~~ Press enter to start ~~~"
 msgstr ""
 
-#: src/draw.c:456
+#: src/draw.c:437
+msgid "(Once the game begins, you can input <q> to quit.)"
+msgstr ""
+
+#: src/draw.c:458
 msgid "Congratulations, you are the winner!"
 msgstr ""
 
-#: src/draw.c:457
+#. 0
+#: src/draw.c:459
 msgid "I am the winner, better luck next time ..."
 msgstr ""
 
-#: src/draw.c:462
+#. 5
+#: src/draw.c:464
 msgid "I have won the toss. "
 msgstr ""
 
-#: src/draw.c:463
+#. 6
+#: src/draw.c:465
 msgid "It is your move ...  "
 msgstr ""
 
@@ -50,7 +58,8 @@ msgstr ""
 msgid "Moves made = %d\n"
 msgstr ""
 
-#: src/draw.c:464
+#. 7
+#: src/draw.c:466
 msgid "My turn, now then, let me see ..."
 msgstr ""
 
@@ -78,7 +87,8 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/draw.c:460
+#. 3
+#: src/draw.c:462
 msgid "Please choose, heads or tails 'h' or 't' ? "
 msgstr ""
 
@@ -90,7 +100,8 @@ msgstr ""
 msgid "Random mode on."
 msgstr ""
 
-#: src/draw.c:458
+#. 1
+#: src/draw.c:460
 msgid "Stale-mate, nobody wins ..."
 msgstr ""
 
@@ -98,15 +109,17 @@ msgstr ""
 msgid "Welcome to the pro ticTacToe league and congratulations on making"
 msgstr ""
 
-#: src/draw.c:459
+#. 2
+#: src/draw.c:461
 msgid "Would you like to play again? y/n or m for menu: "
 msgstr ""
 
-#: src/draw.c:461
+#. 4
+#: src/draw.c:463
 msgid "You have won the toss. "
 msgstr ""
 
-#: src/logic.c:291
+#: src/logic.c:293
 #, c-format
 msgid "h or t ?"
 msgstr ""

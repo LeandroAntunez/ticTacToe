@@ -27,8 +27,6 @@
 
 /* TODO 
  *  - Develop some form of instructions page,
- *  - Give access to settings.
- *  - Add a way for players to quit whilst the game is running.
  *  - automatic game end when stalemate is inevitable.
  */
 

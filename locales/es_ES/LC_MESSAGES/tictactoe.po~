@@ -5,17 +5,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tictactoe 1.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-18 15:08-0300\n"
-"PO-Revision-Date: 2019-06-18 15:17-0300\n"
-"Last-Translator: Leandro Antunez <leandro_antunez@outlook.com>\n"
+"Report-Msgid-Bugs-To: <leandro_antunez@outlook.com> \n"
+"POT-Creation-Date: 2019-05-30 11:08-0300\n"
+"PO-Revision-Date: 2019-05-30 11:18-0300\n"
 "Language-Team: \n"
-"Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
+"Last-Translator: Leandro Antunez <leandro_antunez@outlook.com> \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_ES\n"
 
 #: src/draw.c:433
 msgid "\tTo be or not to be, that is the question; ..."
@@ -25,26 +25,19 @@ msgstr "\tSer o no ser, esa es la cuestión;..."
 msgid "\t~~~ Press enter to start ~~~"
 msgstr "\t~~~ Presione enter para empezar ~~~"
 
-#: src/draw.c:437
-msgid "(Once the game begins, you can input <q> to quit.)"
-msgstr "(Una vez que el juego empieze, puedes ingresar <q> para salir.)"
-
-#: src/draw.c:458
+#: src/draw.c:456
 msgid "Congratulations, you are the winner!"
 msgstr "Felicitaciones, eres el ganador!"
 
-#. 0
-#: src/draw.c:459
+#: src/draw.c:457
 msgid "I am the winner, better luck next time ..."
 msgstr "Yo soy el ganador, mejor suerte la próxima vez ..."
 
-#. 5
-#: src/draw.c:464
+#: src/draw.c:462
 msgid "I have won the toss. "
 msgstr "Yo he ganado el sorteo. "
 
-#. 6
-#: src/draw.c:465
+#: src/draw.c:463
 msgid "It is your move ...  "
 msgstr "Es tu turno ...  "
 
@@ -58,8 +51,7 @@ msgstr "Nivel= %d\n"
 msgid "Moves made = %d\n"
 msgstr "Movimientos hechos= %d\n"
 
-#. 7
-#: src/draw.c:466
+#: src/draw.c:464
 msgid "My turn, now then, let me see ..."
 msgstr "Mi turno, entonces, dejadme ver ..."
 
@@ -91,8 +83,7 @@ msgstr ""
 "Jugador 2 estado -> %d\n"
 "\n"
 
-#. 3
-#: src/draw.c:462
+#: src/draw.c:460
 msgid "Please choose, heads or tails 'h' or 't' ? "
 msgstr "Por favor escoge, cara (tecla 'h') o cruz (tecla 't')? "
 
@@ -104,8 +95,7 @@ msgstr "Modo aleatorio desactivado."
 msgid "Random mode on."
 msgstr "Modo aleatorio activado."
 
-#. 1
-#: src/draw.c:460
+#: src/draw.c:458
 msgid "Stale-mate, nobody wins ..."
 msgstr "Empate, nadie gana ..."
 
@@ -114,18 +104,16 @@ msgid "Welcome to the pro ticTacToe league and congratulations on making"
 msgstr "Bienvenido a la liga profesional TicTacToe y felicitaciones por llegar"
 
 # The player have to press the button 'y' for play again or 'n' to go to the menu.
-#. 2
-#: src/draw.c:461
+#: src/draw.c:459
 msgid "Would you like to play again? y/n or m for menu: "
 msgstr "Te gustaria jugar otra vez? y/n o m para ir al menú: "
 
-#. 4
-#: src/draw.c:463
+#: src/draw.c:461
 msgid "You have won the toss. "
 msgstr "Tú has ganado el sorteo. "
 
 # The player have to decide between head or tail, tiping the buttons 'h' or 't' from the keyword.
-#: src/logic.c:293
+#: src/logic.c:291
 #, c-format
 msgid "h or t ?"
 msgstr "'h' (cara) o 't' (cruz) ?"
